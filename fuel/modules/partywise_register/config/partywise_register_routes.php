@@ -8,6 +8,7 @@ $route[FUEL_ROUTE.'partywise_register/dashboard'] = 'partywise_register/dashboar
 $route[FUEL_ROUTE.'partywise_register/cutting_instruction'] = 'partywise_register/cutting_instruction';
 $route[FUEL_ROUTE.'partywise_register/list_coil'] = 'partywise_register/list_coil';
 $route[FUEL_ROUTE.'partywise_register/list_party'] = 'partywise_register/list_party';
+$route[FUEL_ROUTE.'partywise_register/list_consolidated_party'] = 'partywise_register/list_consolidated_party';
 $route[FUEL_ROUTE.'partywise_register/listChilds'] = 'partywise_register/listChilds';
 $route[FUEL_ROUTE.'partywise_register/delete_coil'] = 'partywise_register/delete_coil';
 $route[FUEL_ROUTE.'partywise_register/print_partywise'] = 'partywise_register/print_partywise';

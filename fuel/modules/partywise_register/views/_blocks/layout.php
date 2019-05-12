@@ -25,6 +25,7 @@
 	<div style="width:640px;">
     <a href="javascript:;"><div class="tabLinkpr activeL inkpr" id="contpr-1" style="float:left;"><h1>Main CoilDetails</h1></div></a> 
     <a href="javascript:;"><div class="tabLinkpr " id="contpr-2" style="float:left;"><h1>ProcessedDetail</h1></div></a>
+		<a href="javascript:;"><div class="tabLinkpr " id="contpr-3" style="float:left;"><h1>Consolidated Bill</h1></div></a>
 	</div>
 </div>
  
@@ -63,6 +64,23 @@
 </div>
 </div>
 <!-- @END -->
+<div class="tabcontentpr hidepr" id="contpr-3-1" style="height:541px;">
+	<div id="bill_list">
+		<div id="billcontentsfolder" style="width:100%; height:550px; overflow-x:hidden; overflow-y:auto;">
+			<div id="billcontent" style="width:100%; min-height:550px; overflow:hidden;"> 
+
+
+			<script src="<?=$this->asset->js_path('jquery.tablesorter.pager', 'partywise_register')?>"></script>
+			<script src="<?=$this->asset->js_path('jquery.tablesorter', 'partywise_register')?>	"></script>
+			<script src="<?=$this->asset->js_path('jquery.tablesorter.widgets', 'partywise_register')?>	"></script>
+					
+			<div id="DynamicGridp_3" >
+			</div>
+				
+			</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <?php //echo $totalweight; ?>
@@ -151,6 +169,66 @@ $.ajax({
 			 $("#myTabels").tablesorter();
 			totalweight_check();
 		});
+
+
+		//consolidated bills
+		var loading = '<div id="DynamicGridLoadingp_2"> '+
+            	   ' <img src="<?=img_path() ?>loading.gif" /><span> Loading Party List... </span> '+ 
+    	    	   ' </div>';
+	   $.ajax({
+        type: "POST",
+        url: "<?php echo fuel_url('partywise_register/list_consolidated_party');?>",
+		data: "party_account_name=" + account_id,
+        dataType: "json"
+        }).done(function( msg ) {
+	      //  obj = JSON.parse(msg);
+			var mediaClass ='';
+			mediaClass += '<table id="consolidated" class="tablesorter tablesorter-blue">';
+			mediaClass +='<thead>';
+			mediaClass +='<tr>';
+			mediaClass += '  <th>Select</th>';
+			mediaClass += '  <th>Coilnumber</th>';
+			mediaClass += '  <th>Received Date</th>';
+			mediaClass += '  <th>Description</th>';
+			mediaClass += '  <th>Thickness</th>';
+			mediaClass += '  <th>Width</th>';
+			mediaClass += '  <th>Weight</th>';
+			mediaClass += '  <th>Present Weight</th>';
+			mediaClass += '  <th>Status</th>';
+			mediaClass += '  <th>Process</th>';
+			mediaClass += '  <th>Action</th>';
+			mediaClass +='</tr>';
+			mediaClass +='</thead>';
+			
+			for (var i=0;i<msg.length;i++)
+			{
+				var item = msg[i];
+				mediaClass += '<tr>';
+				
+		 	mediaClass += '<td>' + '<input type="radio" id="radio_'+item.coilnumber+'" name="list" value="'+item.coilnumber+'"   onClick=showchild("'+item.coilnumber+'") />' + '</td>';
+				mediaClass += '<td>' + item.coilnumber + '</td>';
+				mediaClass += '<td>' + item.receiveddate + '</td>';
+				mediaClass += '<td>' + item.description + '</td>';
+				mediaClass += '<td>' + item.thickness + '</td>';
+				mediaClass += '<td>' + item.width + '</td>';
+				mediaClass += '<td>' + item.weight + '</td>';
+				mediaClass += '<td>' + item.pweight + '</td>';
+				mediaClass += '<td>' + item.status + '</td>';
+				mediaClass += '<td>' + item.process + '</td>';
+					
+			mediaClass += '<td>' + '<a title="Billing Instruction" href="'+item.bi+'"><span class="badge badge-important" style="color: #FFFFFF;">Consolidated Billing</span></a>' + '</td>';
+
+				mediaClass += '</tr>';			
+				
+			}
+			mediaClass += '</table>';
+			
+			$('#DynamicGridp_3').html(mediaClass);
+			 $("#consolidated").tablesorter();
+			totalweight_check();
+		});
+
+
 });
 
 function showchild(parentid) {

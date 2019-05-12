@@ -165,9 +165,6 @@ $.ajax({
 	
 });
 
-
-
-
 function showchild(parentid) {
 	$('#pr_container_name').html(parentid);
 	 $('#DynamicGrid_2').hide();

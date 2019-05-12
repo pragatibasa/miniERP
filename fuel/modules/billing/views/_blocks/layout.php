@@ -153,7 +153,7 @@
 <td align="left" valign="top"> 
 <form>
 <fieldset>
-<legend>Aditional Charges:</legend> 
+<legend>Additional Charges:</legend> 
 	<div class="pad-10">
 	<!--	<input type="checkbox" id="additional_chk" name="additional_chk" value="" /> &nbsp; -->
 		<input type="text" id="txtadditional_type" name="txtadditional_type" onfocus="if (this.value=='New Additional Charge Type') {this.value = '';}" onblur="if(this.value=='') {this.value = 'New Additional Charge Type';}" /> 

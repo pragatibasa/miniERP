@@ -67,7 +67,8 @@ $config['modules_allowed'] = array(
 	'bill_details',
 	'search',
 	'quality_reports',
-	'coil_labels'
+	'coil_labels',
+	'consolidated_billing_instruction'
 	);
 //Configuration ASPEN PANEL
 $config['nav']['Aspen Steel']=array(

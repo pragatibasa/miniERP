@@ -15,6 +15,7 @@ class Partywise_register extends Fuel_base_controller {
 	function __construct()
 	{
 		parent::__construct();
+		
 		$this->config->load('partywise_register');
 		$this->load->language('partywise_register');
 		$this->Partywise_register = $this->config->item('Partywise_register');
@@ -60,8 +61,6 @@ class Partywise_register extends Fuel_base_controller {
 	}
 	
 	function list_party($partyname = '') {	
-		
-		
 		if(empty($partyname)) { 
 			$partyname = $_POST['party_account_name'];
 		}
@@ -95,6 +94,34 @@ class Partywise_register extends Fuel_base_controller {
 		}
 	}
 	
+	function list_consolidated_party($partyname = '') {
+		if(empty($partyname)) { 
+			$partyname = $_POST['party_account_name'];
+		}
+		$this->load->model('coil_details_model');
+		$containers = $this->coil_details_model->list_consolidated_party($partyname);
+		if(!empty($containers)) {
+			foreach($containers as $container) {
+				$obj = new stdClass();
+				$obj->coilnumber = $container->coilnumber;
+				$obj->receiveddate = $container->receiveddate;
+				$obj->description = $container->description;
+				$obj->thickness = $container->thickness;
+				$obj->width = $container->width;
+				$obj->weight = $container->weight;
+				$obj->pweight = round( $container->pweight );
+				$obj->status = $container->status;
+				$obj->process = $container->process;
+				$obj->bi = site_url('fuel/consolidated_billing_instruction').'/?partyid='.$container->coilnumber.'&partyname='.$partyname.'&process='.$container->process;
+				$folders[] = $obj;
+			}
+			echo json_encode($folders);
+		} else {
+			$status = array("status"=>"No Results!");
+            echo json_encode($status);
+		}
+	}
+
 	function list_individualparty($partyname = '') {	
 		if(empty($partyname)) { 
 			$partyname = $_POST['party_individualaccount_name'];
