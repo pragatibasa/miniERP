@@ -1,5 +1,5 @@
 <?php 
-function getCuttingTable($childCoils, $partyId) {
+function getCuttingTable($childCoils, $coilNumber, $selected_cutting_coil) {
 	?><thead>
 	<tr>
 		<th>Bundle Number</th>
@@ -13,23 +13,23 @@ function getCuttingTable($childCoils, $partyId) {
 		<th>Balance Weight</th>
 	</tr>
 	</thead>
-	<?php foreach($childCoils as $bundleSlit) { ?>
-		<tbody>
-		<tr>
-			<td><?=$bundleSlit->bundlenumber?></td>
-			<td><?=$bundleSlit->length?></td>
-			<td><?=$bundleSlit->weight?></td>
-			<td><?=$bundleSlit->totalnumberofsheets?></td>
-			<td><?=$bundleSlit->noofsheetsbilled?></td>
-			<td><input type="text" style="width:55px;" name="cutting-bundles[<?php echo $partyId;?>][<?=$bundleSlit->bundlenumber?>]"/></td>
-			<td><?=$bundleSlit->billingstatus?></td>
-			<td><?=$bundleSlit->balance?></td>
-			<td><?=$bundleSlit->balanceWeight?></td>
-		</tr>
-		</tbody>
-<?php } }
+		<?php
+			foreach($childCoils as $bundleDetails) {
+				?><tr>
+					<td><?=$bundleDetails->bundlenumber?></td>
+					<td><?=$bundleDetails->length?></td>
+					<td><?=$bundleDetails->weight?></td>
+					<td><?=$bundleDetails->totalnumberofsheets?></td>
+					<td><?=$bundleDetails->noofsheetsbilled?></td>
+					<td><?=$selected_cutting_coil[$coilNumber]['number_billed'][$bundleDetails->bundlenumber]?></td>
+					<td><?=$bundleDetails->billingstatus?></td>
+					<td><?=$bundleDetails->balance?></td>
+					<td><?=$bundleDetails->balanceWeight?></td>
+				</tr>
+			<?php }
+}
 
-function getSlittingTable($childCoils, $partyId) {
+function getSlittingTable($childCoils, $coilNumber) {
 	?> <thead>
 	<tr>
 		<th>Serial Number</th>
@@ -40,19 +40,17 @@ function getSlittingTable($childCoils, $partyId) {
 		<th>Billing Status</th>
 		</tr>
 	</thead>
-	<?php foreach($childCoils as $bundleSlit) { 
-		?>
-		<tbody>
-		<tr>
-			<td><?=$bundleSlit->slitnumber?></td>
-			<td><?=$bundleSlit->length?></td>
-			<td><?=$bundleSlit->width?></td>
-			<td><?=$bundleSlit->weight?></td>
-			<td><?=$bundleSlit->sdate?></td>
-			<td><?=$bundleSlit->billingstatus?></td>
-		</tr>
-		</tbody>
-<?php } }
+	<?php foreach($childCoils as $bundleSlit) {
+	?><tr>
+		<td><?=$bundleSlit->slitnumber?></td>
+		<td><?=$bundleSlit->length?></td>
+		<td><?=$bundleSlit->width?></td>
+		<td><?=$bundleSlit->weight?></td>
+		<td><?=$bundleSlit->sdate?></td>
+		<td><?=$bundleSlit->billingstatus?></td>
+	</tr>
+	<?php }
+}
 ?>
 
 <table cellpadding="0" cellspacing="10" border="0">
@@ -87,31 +85,24 @@ function getSlittingTable($childCoils, $partyId) {
 </table>
 
 <form>
-    <fieldset id="parent_slits">
-		<legend>Selected Parent <?=($parent_coil[$partyId]['coil']->vprocess == 'Slitting') ? 'Slits' : 'Bundles'?></legend>
-		<table class="child-coil table table-striped table-bordered">
-			<?php if($parent_coil[$partyId]['coil']->vprocess == 'Cutting') {
-					getCuttingTable($parent_coil[$partyId]['bs'], $$partyId);
-				} else { 
-					getSlittingTable($parent_coil[$partyId]['bs'], $partyId);
-				}?>
+    <fieldset id="cutting_bundles">
+		<legend>Selected Cutting Bundles</legend>
+		<table class="table table-striped table-bordered">
+			<?php foreach($selected_cutting_coil as $coilNumber => $bundleList) {  ?>
+				<h4><?=$coilNumber?></h4>
+				<?php getCuttingTable($bundleList[0], $coilNumber, $selected_cutting_coil);
+			}?>
 		</table>
     </fieldset>
     
     <fieldset>
-		<legend>Selected Children Coil Details</legend>
-		<?php foreach($children_coils as $key => $child) {?>
-			<div>
-				<h4><?=$child['coil']->vIRnumber?></h4>
-				<table class="child-coil table table-striped table-bordered">
-					<?php if($child['coil']->vprocess == 'Cutting') {
-						getCuttingTable($child['bs'], $child['coil']->vIRnumber);
-					} else {
-						getSlittingTable($child['bs'], $child['coil']->vIRnumber);
-					} ?>
-				</table>
-			</div>
-		<?php }?>
+		<legend>Selected Slitting Coil Details</legend>
+		<table class="table table-striped table-bordered">
+			<?php foreach($selected_slitting_coil as $coilNumber => $bundleList) {  ?>
+				<h4><?=$coilNumber?></h4>
+				<?php getSlittingTable($bundleList[0], $coilNumber);
+			}?>
+		</table>
     </fieldset>	
 
     <div class="pad-10">
@@ -135,9 +126,8 @@ function getSlittingTable($childCoils, $partyId) {
     </fieldset>
 
     <div class="pad-10">
-	    Total: <input type="text" style="width: 272px;height: 30px;" id="totalweight_checks" DISABLED /> &nbsp;&nbsp;&nbsp;
-        <input type="text" style="width: 272px;height: 30px;" id="totalrates" DISABLED/>&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="text" style="width: 272px;height: 30px;" id="totalamtsslit"  DISABLED/>
+	    Total: 
+        <input value="<?php echo $thickness_rate->subtotal; ?>" type="text" style="width: 272px;height: 30px;" id="totalrates" DISABLED/>&nbsp;&nbsp;&nbsp;&nbsp;
     </div>
 
     <div align="left">

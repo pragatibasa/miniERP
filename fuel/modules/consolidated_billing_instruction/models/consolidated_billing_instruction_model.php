@@ -90,4 +90,51 @@ class consolidated_billing_instruction_model extends Base_module_model {
         }
         return $arr[0];
     }
+
+    function getSelectedCuttingCoils($coilNumber, $selectedBundles) {
+        $strSql = "select aspen_tblbillingstatus.nSno as bundlenumber,aspen_tblcuttinginstruction.nBundleweight
+        as weight,aspen_tblcuttinginstruction.nLength as length,aspen_tblcuttinginstruction.vIRnumber as coilnumber
+       ,aspen_tblcuttinginstruction.nNoOfPieces as totalnumberofsheets,
+        aspen_tblbillingstatus.nBilledNumber  as noofsheetsbilled
+       ,aspen_tblbillingstatus.vBillingStatus as billingstatus, 
+       aspen_tblbillingstatus.nbalance AS balance,
+        round(nBundleweight - (nBundleweight*nBilledNumber/nNoOfPieces),2) as balanceWeight
+         from aspen_tblcuttinginstruction
+       LEFT JOIN aspen_tblbillingstatus  ON aspen_tblcuttinginstruction.vIRnumber=aspen_tblbillingstatus
+       .vIRnumber  WHERE  aspen_tblcuttinginstruction.nSno = aspen_tblbillingstatus.nSno and aspen_tblcuttinginstruction
+       .vIRnumber='".$coilNumber."' and aspen_tblcuttinginstruction.nSno in (".implode(',',array_keys($selectedBundles)).") Group by  aspen_tblbillingstatus.nSno";
+
+       $query = $this->db->query($strSql);
+       $arr = '';
+       if($query->num_rows() > 0) {
+          foreach($query->result() as $row) {
+             $arr[] =$row;
+          }
+       }
+       return $arr;
+    }
+
+    function getSelectedSlittingCoils($coilNumber, $selectedBundles) {
+        $strSql = "select aspen_tblslittinginstruction.nSno as slitnumber,
+        aspen_tblslittinginstruction.nLength as length,
+        aspen_tblslittinginstruction.nWidth as width,
+        aspen_tblslittinginstruction.nWeight as weight,
+        aspen_tblslittinginstruction.dDate as sdate,
+        aspen_tblbillingstatus.vBillingStatus as billingstatus,
+        aspen_tblinwardentry.vParentBundleNumber 
+    from aspen_tblslittinginstruction
+      LEFT JOIN aspen_tblbillingstatus ON aspen_tblslittinginstruction.vIRnumber=aspen_tblbillingstatus.vIRnumber 
+      left join aspen_tblinwardentry on aspen_tblinwardentry.vParentIRNumber = aspen_tblslittinginstruction.vIRnumber and aspen_tblinwardentry.vParentBundleNumber = aspen_tblslittinginstruction.nSno
+      WHERE aspen_tblslittinginstruction.nSno = aspen_tblbillingstatus.nSno and aspen_tblslittinginstruction.vIRnumber='".$coilNumber."' and aspen_tblslittinginstruction.nSno in (".implode(',',array_keys($selectedBundles)).") and aspen_tblslittinginstruction.vStatus =  'Ready To Bill' 
+      Group by aspen_tblbillingstatus.nSno";
+      
+      $query = $this->db->query($strSql);
+      $arr = '';
+      if($query->num_rows() > 0) {
+         foreach($query->result() as $row) {
+            $arr[] =$row;
+         }
+      }
+      return $arr;
+    }
 }

@@ -1,6 +1,10 @@
 <?php
 require_once(FUEL_PATH.'/libraries/Fuel_base_controller.php');
 
+function valid_values($var) {
+	return $var;
+}
+
 class consolidated_billing_instruction extends Fuel_base_controller {
 
 	public $nav_selected =  'consolidated_billing_instruction';
@@ -76,10 +80,26 @@ class consolidated_billing_instruction extends Fuel_base_controller {
 
 		$vars['parent_coil'][$_REQUEST['partyid']]['coil'] = $this->consolidated_billing_instruction_model->getParentCoilDetails($_POST['partyid']);
 
+		foreach($_POST['cutting-bundles'] as $coilNumber => $bundles) {
+			$filtered_bundles = array_filter($bundles, "valid_values");
+			$vars['selected_cutting_coil'][$coilNumber][] = $this->consolidated_billing_instruction_model->getSelectedCuttingCoils($coilNumber, $filtered_bundles);
+			
+			$vars['selected_cutting_coil'][$coilNumber]['number_billed'] = $filtered_bundles;
+		}
+
+		foreach($_POST['slitting-bundles'] as $coilNumber => $bundles) {
+			$filtered_bundles = array_filter($bundles, "valid_values");
+			$vars['selected_slitting_coil'][$coilNumber][] = $this->consolidated_billing_instruction_model->getSelectedSlittingCoils($coilNumber, $filtered_bundles);
+		}
+
 		$vars['thickness_rate'] = $this->consolidated_billing_instruction_model->getThicknessRateByCoils(array_merge(array_keys($_POST['slitting-bundles']),array_keys($_POST['cutting-bundles'])));
 
 		$vars['partyId'] = $_REQUEST['partyid'];
 
+		// print_r('<pre>');
+		// print_r($vars);
+		// print_r('</pre>');
+		// exit;
 		$this->_render('consolidated_billing_instruction_preview', $vars);
 	}
 }	
