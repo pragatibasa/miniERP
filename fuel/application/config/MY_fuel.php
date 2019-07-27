@@ -87,7 +87,7 @@ $config['nav']['Aspen_Steel'] = array('inward_entry' => 'Inward Register',
 										'inward' => 'Inward',
 										'partywise_register' => 'Partywise Register',
 										'workin_progress' => 'Workin Progress',
-
+                                        'weigh_updation' => 'Weigh Bridge Outward Updation'
 );
 
 
