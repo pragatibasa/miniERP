@@ -33,7 +33,7 @@
 	<?=js('jquery/example', 'fuel')?>
 	<?=js('jquery/json.htmTable', 'fuel')?>
 	<?=js('jquery/plugins/jdash', 'fuel')?>
-	<?=js('jquery/plugins/jquery.autocomplete', 'fuel')?>
+<!--	--><?//=js('jquery/plugins/jquery.autocomplete', 'fuel')?>
 	<?=js('jqx/jqx', 'fuel')?>
 	<?=js('jquery/jquery-1.3.1.min', 'fuel')?>
 	<?=js($this->config->item('fuel_javascript', 'fuel'), 'fuel')?>

@@ -1,0 +1,3 @@
+<?php
+define('VEHICLE_INWARD_FOLDER', 'vehicle_inward');
+define('VEHICLE_INWARD_PATH', MODULES_PATH.VEHICLE_INWARD_FOLDER.'/');

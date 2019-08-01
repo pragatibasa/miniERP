@@ -94,6 +94,27 @@ class inward extends Fuel_base_controller {
 		$pnamelists = $this->inward_model->list_pnamelists($pname);
 		return $pnamelists;
 	}
+
+    function exportExcel() {
+        header("Content-Type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=inward_register".date('d/M/Y'));
+        $heading = false;
+
+        $records = $this->inward_entry_model->exportInwardData();
+//        print_r($records);exit;
+        if($records->num_rows() > 0) {
+            foreach($records->result() as $row) {
+                $arr = get_object_vars($row);
+                if(!$heading) {
+                    // display field/column names as a first row
+                    echo implode("\t", array_keys($arr)) . "\n";
+                    $heading = true;
+                }
+                echo implode("\t", array_values($arr)) . "\n";
+            }
+        }
+        exit;
+    }
 }
 /* End of file */
 /* Location: ./fuel/modules/controllers*/

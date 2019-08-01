@@ -1,21 +1,21 @@
-<?php  
+<?php
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 require_once(APPPATH.'helpers/tcpdf/config/lang/eng.php');
 require_once(APPPATH.'helpers/tcpdf/tcpdf.php');
 
 class inward_model extends Base_module_model {
-	
+
 	public $required = array('nPartyName','vIRnumber', 'dReceivedDate', 'vLorryNo', 'vInvoiceNo', 'dInvoiceDate', 'nMatId', 'fWidth', 'fThickness', 'fQuantity');
-	
+
 	protected $key_field = 'dReceivedDate';
 	function __construct(){
         parent::__construct('aspen_tblinwardentry');
     }
-		
+
 	function example(){
 		return true;
 	}
-	
+
 	function list_pnamelists($pname){
 		$query  = $this->db->query("SELECT nPartyName FROM aspen_tblpartydetails WHERE nPartyName LIKE '$pname%' LIMIT 10");
 		//echo $query;
@@ -32,7 +32,7 @@ class inward_model extends Base_module_model {
 			echo '</ul>';
 		}
 	}
-	
+
 	function checkcoilno($REQUEST) {
 		if($REQUEST){
 		$pid = $REQUEST["pid"];
@@ -60,10 +60,10 @@ class inward_model extends Base_module_model {
 		return $checkquery->result()[0];
 	}
 
-	function inwardbillgeneratemodel($pname='',$pid='') {   
+	function inwardbillgeneratemodel($pname='',$pid='') {
 	$sqlinward = "select aspen_tblpartydetails.nPartyName as partyname ,aspen_tblinwardentry.vIRnumber as coilnumber, DATE_FORMAT(dReceivedDate, '%d-%m-%Y')  as receiveddate ,aspen_tblmatdescription.vDescription as matdescription, aspen_tblinwardentry.fThickness as thickness, aspen_tblinwardentry.fWidth as width,aspen_tblinwardentry.fQuantity as Weight, aspen_tblinwardentry.vLorryNo AS Lorryno,aspen_tblinwardentry.vInvoiceNo as invoiceno, DATE_FORMAT(dInvoiceDate, '%d-%m-%Y') as invoicedate,aspen_tblinwardentry.vStatus as status from aspen_tblinwardentry  left join aspen_tblpartydetails on aspen_tblpartydetails.nPartyId = aspen_tblinwardentry.nPartyId left join aspen_tblmatdescription on aspen_tblmatdescription.nMatId = aspen_tblinwardentry.nMatId  where aspen_tblinwardentry.vIRnumber ='".$pid."'";
 		$querymain = $this->db->query($sqlinward);
-		
+
 		//$invoice = 'CoilNumber_'.$pid;
 		$party_name = $querymain->row(0)->partyname;
 		$coil_number = $querymain->row(0)->coilnumber;
@@ -75,7 +75,7 @@ class inward_model extends Base_module_model {
 		$Lorryno = $querymain->row(0)->Lorryno;
 		$invoicedate = $querymain->row(0)->invoicedate;
 		$invoiceno = $querymain->row(0)->invoiceno;
-						
+
 		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 		$pdfname= 'inwardslip_'.$pid.'.pdf';
 		$resolution= array(72, 150);
@@ -87,8 +87,8 @@ class inward_model extends Base_module_model {
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 		$pdf->SetAutoPageBreak(FALSE, PDF_MARGIN_BOTTOM);
 		$pdf->SetFont('helvetica', '', 3);
-		$pdf->AddPage('P', $resolution);	
-		
+		$pdf->AddPage('P', $resolution);
+
 		$html = '
 		<table align="center" width="100%" cellspacing="0" cellpadding="5"  border="0.1">
 			<tr>
@@ -149,9 +149,9 @@ class inward_model extends Base_module_model {
 		$pdf->lastPage();
 		$pdf->Output($pdfname, 'I');
 	}
-	
-		
-	function saveinwardentry($pid,$pname, $date3,$lno,$icno,$date4,$coil,$fWidth, 
+
+
+	function saveinwardentry($pid,$pname, $date3,$lno,$icno,$date4,$coil,$fWidth,
 							$fThickness,$fLength,$fQuantity,$status,$hno,$pna,$ppartyId,$parentBundleNumber,$grade,$cast)
 	{
 		$updateSql = '';
@@ -161,7 +161,7 @@ class inward_model extends Base_module_model {
 			$query = $this->db->query($updateSql);
 		} else {
 			$ppartyId = "NULL";
-		} 
+		}
 
 		if(empty($parentBundleNumber)) {
 			$parentBundleNumber = "NULL";
@@ -171,7 +171,7 @@ class inward_model extends Base_module_model {
 		nPartyId,vIRnumber,dReceivedDate,dBillDate,vLorryNo,vInvoiceNo,dInvoiceDate,nMatId,fWidth,fThickness,fLength,fQuantity,vStatus,
 		vHeatnumber,vPlantname,fpresent,billedweight,dSysDate,vprocess,vParentIRNumber,vParentBundleNumber,vGrade,vCast) 
 		VALUES((SELECT aspen_tblpartydetails.nPartyId FROM aspen_tblpartydetails where aspen_tblpartydetails.nPartyName = '". $pname. "'),  '". $pid. "','". $date3. "', CURDATE(),'". $lno. "','". $icno. "','". $date4. "',(SELECT aspen_tblmatdescription.nMatId  FROM aspen_tblmatdescription where aspen_tblmatdescription.vDescription = '". $coil. "'),'". $fWidth. "','". $fThickness. "','". $fLength. "','". $fQuantity. "','". $status. "','". $hno. "','". $pna. "','". $fQuantity. "',0,now(),'','".$ppartyId."','".$parentBundleNumber."','".$grade."','".$cast."' )";
-		
+
 		$sql1 = "Insert into aspen_hist_tblinwardentry (
 		nPartyId,vIRnumber,dReceivedDate,dBillDate,vLorryNo,vInvoiceNo,dInvoiceDate,nMatId,fWidth,fThickness,fLength,fQuantity,vStatus,
 		vHeatnumber,vPlantname,fpresent,billedweight,dSysDate) 
@@ -187,10 +187,10 @@ class inward_model extends Base_module_model {
 			sendSMS($query->result()[0]->nInwardUpdates,'Received Coil No '.$pid.'%n'.$coil.' '.$fThickness.'mm x '.$fWidth.'mm '.$fQuantity.'kgs%nOn '.date('d/m/Y').'%nVehicle no '.$lno.'%nRef:'.$icno);
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	function mat() {
 		$sql = "select * from aspen_tblmatdescription";
 		$query = $this->db->query($sql);
@@ -201,11 +201,11 @@ class inward_model extends Base_module_model {
 			{
 				$arr[] =$row;
 			}
-		} 
+		}
 		return $arr;
 	}
-	
-	
+
+
 	function party() {
 		$sql = "select nPartyName from aspen_tblpartydetails";
 		$query = $this->db->query($sql);
@@ -216,16 +216,30 @@ class inward_model extends Base_module_model {
 			{
 				$arr[] =$row;
 			}
-		} 
+		}
 		return $arr;
 	}
-	
-	
-	
-	
-			
+
+	function getNextCoilNumber() {
+		$strSql = 'select COALESCE(max(vIRnumber),1) as max_coil_number from aspen_tblinwardentry;';
+		$query = $this->db->query($strSql);
+		return $query->result()[0];
+	}
+
+    function exportInwardData() {
+	    $strSql = "SELECT 
+                        ai.*, ap.*, am.*
+                    FROM
+                        aspen_tblinwardentry ai
+                            LEFT JOIN
+                        aspen_tblpartydetails ap ON ap.nPartyId = ai.nPartyId
+                            LEFT JOIN
+                        aspen_tblmatdescription am ON am.nMatId = ai.nMatId";
+
+        return $this->db->query($strSql);
+    }
 }
 
 class inwardmodel extends Base_module_record {
- 	
+
 }

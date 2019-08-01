@@ -7,8 +7,6 @@
 <?=$this->form->open(array('action' => fuel_url('manage/activity'), 'method' => 'post', 'id' => 'form_table'))?>
 
 <div id="action">
-
-
 	<div id="filters">
 		<table border="0" cellspacing="0" cellpadding="0">
 			<tbody>
@@ -21,7 +19,7 @@
 				</tr>
 			</tbody>
 		</table>
-		
+
 	</div>
 	
 	

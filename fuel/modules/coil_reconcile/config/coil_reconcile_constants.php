@@ -1,0 +1,3 @@
+<?php
+define('COIL_RECONCILE_FOLDER', 'coil_reconcile');
+define('COIL_RECONCILE_PATH', MODULES_PATH.COIL_RECONCILE_FOLDER.'/');

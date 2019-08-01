@@ -11,4 +11,3 @@ $config['modules']['reports'] = array(
 	'permission' => 'weigh_updation',
 	'nav_selected' => 'weigh_updation'
 );
-$config['nav']['sharoff_steel']['weigh_updation'] = lang('module_weigh_updation');

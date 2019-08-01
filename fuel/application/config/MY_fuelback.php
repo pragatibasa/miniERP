@@ -188,7 +188,7 @@ $config['fuel_javascript'] = array(
 	'jquery/plugins/jquery.cookie',
 	'jquery/plugins/jquery.fillin',
 	'jquery/plugins/jquery.selso',
-	'jquery/plugins/jquery-ui-1.8.4.custom.min',
+//	'jquery/plugins/jquery-ui-1.8.4.custom.min',
 	'jquery/plugins/jquery.disable.text.select.pack',
 	'jquery/plugins/jquery.supercomboselect',
 	'jquery/plugins/jquery.MultiFile',

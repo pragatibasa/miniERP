@@ -17,4 +17,5 @@ $route[FUEL_ROUTE.'inward/autosuggest'] = 'inward/autosuggest';
 $route[FUEL_ROUTE.'inward/matdesc'] = 'inward/matdesc';
 $route[FUEL_ROUTE.'inward/savedetails'] = 'inward/savedetails';
 $route[FUEL_ROUTE.'inward/checkcoilno'] = 'inward/checkcoilno';
+$route[FUEL_ROUTE.'inward/exportExcel'] = 'inward/exportExcel';
 

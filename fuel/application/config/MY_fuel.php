@@ -36,6 +36,7 @@ $config['modules_allowed'] = array(
     'inward_entry_create',
     'partywise_register',
     'weigh_updation',
+    'weigh_updation_inward',
     'group_access',
     'aged_payable',
     'workin_progress',
@@ -70,6 +71,7 @@ $config['modules_allowed'] = array(
     'quality_reports',
     'coil_labels',
     'coil_reconcile',
+    'vehicle_inward',
     'vehicle_despatch',
 );
 //Configuration ASPEN PANEL
@@ -87,7 +89,9 @@ $config['nav']['Aspen_Steel'] = array('inward_entry' => 'Inward Register',
 										'inward' => 'Inward',
 										'partywise_register' => 'Partywise Register',
 										'workin_progress' => 'Workin Progress',
+                                        'weigh_updation_inward' => 'Weigh Bridge Inward Updation',
                                         'weigh_updation' => 'Weigh Bridge Outward Updation'
+
 );
 
 
@@ -113,6 +117,7 @@ $config['nav']['Reports'] = array('stock_report' => 'Customer Stock Report ',
     'customer_billing' => 'Customer Billing Report',
     'customer_outward' => 'Customer Outward Report',
     'coil_reconcile' => 'Coil Reconcilliation Report',
+    'vehicle_inward' => 'Inward Vehicle Report',
     'vehicle_despatch' => 'Vehicle wise despatch Report',
     //'customer_summary' => 'Customer Summary',
     'factory_material' => 'Factory Material Movement ',
@@ -194,7 +199,7 @@ $config['fuel_javascript'] = array(
 	'jquery/plugins/jquery.cookie',
 	'jquery/plugins/jquery.fillin',
 	'jquery/plugins/jquery.selso',
-	'jquery/plugins/jquery-ui-1.8.4.custom.min',
+//	'jquery/plugins/jquery-ui-1.8.4.custom.min',
 	'jquery/plugins/jquery.disable.text.select.pack',
 	'jquery/plugins/jquery.supercomboselect',
 	'jquery/plugins/plugins',

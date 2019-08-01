@@ -6,8 +6,7 @@ require_once(APPPATH.'helpers/tcpdf/config/lang/eng.php');
 require_once(APPPATH.'helpers/tcpdf/tcpdf.php');
 
 class Billing_model extends Base_module_model {
-    function __construct()
-    {
+    function __construct() {
         parent::__construct('aspen_tblbilldetails');// table name
     }
 
@@ -16,18 +15,17 @@ class Billing_model extends Base_module_model {
 	}
 
 	function checkbillno($POST) {
-  if($POST){
-  $billid = $POST["billid"];
-  }
-  $checkdata = "select * from aspen_tblbilldetails where nBillNo = '".$billid."'  LIMIT 0,1";
-  $checkquery = $this->db->query($checkdata);
-  if ($checkquery->num_rows() == 0)
-  {
-   echo '0';
-  }else{
-   echo '1';
-  }
- }
+      if($POST) {
+         $billid = $POST["billid"];
+      }
+      $checkdata = "select * from aspen_tblbilldetails where nBillNo = '".$billid."'  LIMIT 0,1";
+      $checkquery = $this->db->query($checkdata);
+      if ($checkquery->num_rows() == 0) {
+           echo '0';
+      } else {
+           echo '1';
+      }
+    }
 
 
 	function totalweight_checkmodels($partyid, $bundleIds) {
@@ -69,8 +67,8 @@ class Billing_model extends Base_module_model {
 			$partyid = $pid;
 			$nsno = $nsno;
 		}
-	$sqlpcheck= "Select vprocess from aspen_tblinwardentry where vIRnumber='".$pid."'";
-	$query = $this->db->query($sqlpcheck);
+        $sqlpcheck= "Select vprocess from aspen_tblinwardentry where vIRnumber='".$pid."'";
+        $query = $this->db->query($sqlpcheck);
 		$arr='';
 		if ($query->num_rows() > 0) {
 		 	foreach ($query->result() as $row)

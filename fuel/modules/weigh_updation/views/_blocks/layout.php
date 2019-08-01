@@ -242,42 +242,43 @@ function enableWeights(billNumber) {
   }
 }
 
-function calculateAllocatedWeights(billNumber) {
-  var packing_weight = parseInt($('.packing_weight.'+billNumber).val());
-  var material_weight = parseInt($('.material_weight.'+billNumber).val());
+    function calculateAllocatedWeights(billNumber) {
+        var packing_weight = parseFloat($('.packing_weight.'+billNumber).val());
+        var material_weight = parseFloat($('.material_weight.'+billNumber).val());
+        var billWeight = Math.round(parseFloat($('#check_'+billNumber).data('billWeight')*1000));
 
-  if(packing_weight && material_weight) {
-    var totAllocatedWeight = material_weight + packing_weight;
-    var differenceWeight = (parseInt($('#check_'+billNumber).data('billWeight')*1000)) - parseInt(totAllocatedWeight);
+        if(!isNaN(packing_weight) && !isNaN(material_weight)) {
+            var totAllocatedWeight = material_weight + packing_weight;
+            var differenceWeight = billWeight - parseFloat(totAllocatedWeight);
 
-    $('.total-allocated-weight.'+billNumber).text(totAllocatedWeight).val(totAllocatedWeight);
-    $('.difference-weight.'+billNumber).text(differenceWeight).val(differenceWeight);
+            $('.total-allocated-weight.'+billNumber).text(totAllocatedWeight).val(totAllocatedWeight);
+            $('.difference-weight.'+billNumber).text(differenceWeight).val(differenceWeight);
 
-    var sum = 0
-    $('input[name="totAllocatedWeight[]"]').each(function(index) {
-        if($(this).val()) {
-            sum += parseInt($(this).val());
-        }
-    });
+            var sum = 0
+            $('input[name="totAllocatedWeight[]"]').each(function(index) {
+                if($(this).val()) {
+                    sum += parseFloat($(this).val());
+                }
+            });
 
     $('.allocated-weight').text(sum+' kgs');
   }
 }
 
-function saveWeightmentDetails() {
-    $('#save-weighment-outward').attr('disabled','disabled');
-    var data = $('form').serialize();
-    $.ajax({
-        type: "POST",
-        url: "<?php echo fuel_url('weigh_updation/saveOutwardWeightment');?>",
-        data: data,
-    }).done(function( msg ) {
-      if(msg == 'success') {
-        alert('Weighment has been successfully updated. Please click to update a new weighment');
-        window.location="<?php echo fuel_url('weigh_updation');?>";
-      } else {
-          $('#save-weighment-outward').attr('disabled','false');
-      }
-  });
-}
+    function saveWeightmentDetails() {
+        $('#save-weighment-outward').attr('disabled','disabled');
+        var data = $('form').serialize();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo fuel_url('weigh_updation/saveOutwardWeightment');?>",
+            data: data,
+        }).done(function( msg ) {
+            if(msg == 'success') {
+                alert('Weighment has been successfully updated. Please click to update a new weighment');
+                window.location="<?php echo fuel_url('weigh_updation');?>";
+            } else {
+                $('#save-weighment-outward').attr('disabled','false');
+            }
+        });
+    }
 </script>
