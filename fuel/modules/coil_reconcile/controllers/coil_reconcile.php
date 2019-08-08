@@ -11,7 +11,7 @@ class coil_reconcile extends Fuel_base_controller {
 	}
 
 	function index() {
-	    $vars['parties'] = $this->coil_reconcile_model->getParties();
+        $vars['parties'] = $this->coil_reconcile_model->getParties();
 		$this->_render('coil_reconcile', $vars);
 	}
 
@@ -38,7 +38,7 @@ class coil_reconcile extends Fuel_base_controller {
                 $responseData['bill_details'][$row->nBillNo][] = $row->nBillNo;
                 $responseData['bill_details'][$row->nBillNo][] = $row->dBillDate;
                 $responseData['bill_details'][$row->nBillNo][] = $row->ntotalpcs;
-                $responseData['bill_details'][$row->nBillNo][] = $row->fTotalWeight;
+                $responseData['bill_details'][$row->nBillNo][] = ($row->vBillType == 'Slitting' ) ? round(($row->fTotalWeight),3) : round(($row->fTotalWeight*1000),3);
                 $responseData['bill_details'][$row->nBillNo][] = ($row->materialWeight == null) ? 0 : $row->materialWeight;
                 $responseData['bill_details'][$row->nBillNo][] = ($row->packagingWeight == null) ? 0 : $row->packagingWeight;
                 $responseData['bill_details'][$row->nBillNo][] = ($row->totalAllocatedWeight == null) ? 0 :$row->totalAllocatedWeight;

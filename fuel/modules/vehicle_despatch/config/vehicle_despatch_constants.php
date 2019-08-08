@@ -1,3 +1,3 @@
 <?php
-define('VEHICLE_DESPATCH_FOLDER', 'vehicle_inward');
+define('VEHICLE_DESPATCH_FOLDER', 'vehicle_despatch');
 define('VEHICLE_DESPATCH_PATH', MODULES_PATH.VEHICLE_DESPATCH_FOLDER.'/');

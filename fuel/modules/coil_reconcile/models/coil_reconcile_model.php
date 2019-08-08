@@ -11,7 +11,15 @@ class coil_reconcile_model extends Base_module_model {
   }
 
   function getParties() {
-      $query = $this->db->query('select * from aspen_tblpartydetails');
+      $CI =& get_instance();
+      $userdata = $CI->fuel_auth->user_data();
+
+      $whereSql = '';
+      if($userdata['super_admin'] == 'no') {
+        $whereSql = 'where nPartyName="'.$userdata['user_name'].'"';
+      }
+
+      $query = $this->db->query('select * from aspen_tblpartydetails '.$whereSql);
       $arr='';
       if ($query->num_rows() > 0) {
           foreach ($query->result() as $row) {
@@ -34,7 +42,7 @@ class coil_reconcile_model extends Base_module_model {
 
   function getCoilReconcileDetails($coilNumber) {
       return $this->db->query("SELECT 
-                                    ai.*, am.*, COALESCE(COUNT(ai.vIRnumber), NULL) AS coil_upgrade
+                                    ai.*, abs(ROUND(ai.fpresent)) as fpresent, am.*, COALESCE(COUNT(ai.vIRnumber), NULL) AS coil_upgrade
                                 FROM
                                     aspen_tblinwardentry ai
                                         LEFT JOIN
