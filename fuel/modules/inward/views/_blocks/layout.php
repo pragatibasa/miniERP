@@ -3,7 +3,9 @@
 &nbsp;
 <fieldset>
 <legend><strong>Inward Entry-ASPEN</strong><br/></legend>
-	<div>  
+    <form id="cisave" method="post">
+
+    <div>
 		<table cellpadding="0" cellspacing="10" border="0">
 			<tr>
 				<td>
@@ -36,7 +38,7 @@
 				</td>
 				<td>  
 					<!--<input id="pid" type="text"  />-->
-				<input id="pid" type="text" onchange="coilexist();" />
+				<input id="pid" name="pid" type="text" onchange="coilexist();" />
 					
 					<script>
 									function coilexist(){
@@ -73,7 +75,7 @@
 					<label>Received Date</label>
 				</td> 
 				<td>
-					<input id="date3" type="text" />
+					<input id="date3" name="date3" type="text" />
 						<script>
   $(function() {
     $( "#date3" ).picker();
@@ -86,7 +88,7 @@
 					<label>Lorry Number<span class="required">*</span></label>
 				</td> 
 				<td>
-					<input id="lno" value="<?php echo !empty($pcoildetails) ? $pcoildetails->vLorryNo : '';?>" name="vLorryNo" type="text"/> 
+					<input id="lno" name="lno" value="<?php echo !empty($pcoildetails) ? $pcoildetails->vLorryNo : '';?>" name="vLorryNo" type="text"/>
 				</td>
 			</tr>	
 			<tr>
@@ -94,7 +96,7 @@
 					<label>Invoice/Challan Number<span class="required">*</span></label>
 				</td>  
 				<td>
-					<input id="icno" value="<?php echo !empty($pcoildetails) ? $pcoildetails->vInvoiceNo : '';?>" type="text" />
+					<input id="icno" name="icno" value="<?php echo !empty($pcoildetails) ? $pcoildetails->vInvoiceNo : '';?>" type="text" />
 				</td>
 			</tr>
 			<tr>
@@ -102,7 +104,7 @@
 					<label>Invoice/Challan Date<span class="required">*</span></label>
 				</td>
 				<td> 
-					<input  id="date4" value="<?php echo !empty($pcoildetails) ? $pcoildetails->dInvoiceDate : '';?>" type="text" />
+					<input id="date4" name="date4" value="<?php echo !empty($pcoildetails) ? $pcoildetails->dInvoiceDate : '';?>" type="text" />
 						<script>
   $(function() {
     $( "#date4" ).picker();
@@ -136,7 +138,7 @@
 					<label>Width in mm<span class="required">*</span></label>
 				</td>
 				<td> 
-					<input id="fWidth" value="<?php  
+					<input id="fWidth" name="fWidth" value="<?php
 					if(empty($bundledetails) && empty($pcoildetails)) {
 						echo '';
 					} else if(!empty($pcoildetails) && !empty($bundledetails)) {
@@ -163,7 +165,7 @@
 					<label>Thickness in mm<span class="required">*</span></label>
 				</td>
 				<td> 
-					<input id="fThickness" value="<?php echo !empty($pcoildetails) ? $pcoildetails->fThickness : '';?>" type="text" onkeyup=""/>
+					<input id="fThickness" name="fWidth" value="<?php echo !empty($pcoildetails) ? $pcoildetails->fThickness : '';?>" type="text" onkeyup=""/>
 						<script>
 							$("#fThickness").keyup(function() {
 								if(parseInt($(this).val()) > 100)
@@ -180,7 +182,7 @@
 					<label>Length in mm</label>
 				</td>
 				<td> 
-					<input id="fLength" value="<?php  
+					<input id="fLength" name="fLength" value="<?php
 					if(empty($bundledetails) && empty($pcoildetails)) {
 						echo '';
 					} else if(!empty($pcoildetails) && !empty($bundledetails)) {
@@ -196,7 +198,7 @@
 					<label>Weight in Kgs.<span class="required">*</span></label>
 				</td>
 				<td> 
-					<input id="fQuantity" value="<?php  
+					<input id="fQuantity" name="fQuantity" value="<?php
 					if(empty($bundledetails) && empty($pcoildetails)) {
 						echo '';
 					} else if(!empty($pcoildetails) && !empty($bundledetails)) {
@@ -215,9 +217,7 @@
 						});
 									
 
-		</script>	
-
-					
+		</script>
 				</td>
 			</tr>
 			<tr>
@@ -249,15 +249,15 @@
 					<label>Heat Number </label>
 				</td>
 				<td> 
-					<input id="hno"  type="text" />
+					<input id="hno" name="hno" type="text" />
 				</td>
 			</tr>
-				<tr>
+            <tr>
 				<td>
 					<label>Plant Name</label>
 				</td>
 				<td> 
-					<input id="pna"  type="text" />
+					<input id="pna" name="pna" type="text" />
 				</td>
 			</tr>
 		</table>
@@ -284,15 +284,11 @@
 </fieldset>	
 </div>
 
-            
 <script language="javascript" type="text/javascript">
 
 $(document).ready(function() {
-	//$(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
 	$('.selectpicker').selectpicker();
 });
-
-
 
 function inwardregistrybutton(id)
 {
@@ -306,7 +302,6 @@ function inwardregistrybutton(id)
 		}
 		});
 }
-
 
 function functionsave()
 {
@@ -324,10 +319,12 @@ function functionsave()
 	var fLength = $('#fLength').val();
 	var fQuantity = $('#fQuantity').val();
 	var status = $('#status').val();
+
 	var hno = $('#hno').val();
 	var pna = $('#pna').val();
 	var grade = $('#grade').val();
 	var cast = $('#cast').val();
+
 	if(pid == '' || pname == ''  || coil == '' || fWidth == '' || fThickness == '' || fQuantity == '') {
 		alert("Please Enter the required fields")
 	} else if(pname == 'undefined') {
@@ -342,8 +339,8 @@ function functionsave()
 		   url : "<?php echo fuel_url('inward/savedetails');?>/",  
 		   data: dataString,
 		   success: function(msg)
-		   { 
-		   
+		   {
+
 			alert("Saved successfully!");
 			var pname = $('#pname').val();
 			var pid = $('#pid').val();

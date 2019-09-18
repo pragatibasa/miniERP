@@ -78,7 +78,7 @@ class Workin_progress extends Fuel_base_controller {
 		return json_encode($folders);
 	}
 
-	function cutting_slip(){
+	function cutting_slip() {
         $queryStr = $_SERVER['QUERY_STRING'];
         parse_str($queryStr, $args);
         $partyid = $args["partyid"];

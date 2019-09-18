@@ -6,8 +6,11 @@ require_once(APPPATH.'helpers/tcpdf/config/lang/eng.php');
 require_once(APPPATH.'helpers/tcpdf/tcpdf.php');
 
 class bill_details_model extends Base_module_model {
+    private $companyData;
     function __construct() {
         parent::__construct('aspen_tblbilldetails');// table name
+        $CI =& get_instance();
+        $this->companyData = $CI->fuel_auth->company_data();
     }
 
 	function getPaginatedBillDetails($get) {
@@ -272,30 +275,15 @@ class bill_details_model extends Base_module_model {
 		$pdf->SetFont('helvetica', '', 8);
 		$pdf->AddPage();
 
-	$html = '<table width="100%"  cellspacing="0" cellpadding="5" border="0">';
-
+	$str = '';
 	if( $billStatus == 'Cancelled') {
-		$html .= '<tr>
+        $str = '<tr>
 				<td align="center"><h3>** Note : This bill has been cancelled</h3></td>
 			</tr>';
 	}
 
-	$html .='<tr>
-				<td align="center"><b>Job Work / Delivery Challan</b></td>
-			</tr>
-			<tr>
-				<td width="16%" align:"left"><h4>TIN:29730066589</h4></td>
-				<td width="70%"align="center" style="font-size:60px; font-style:italic; font-family: fantasy;"><h1>ASPEN STEEL PVT LTD</h1></td>
-				<td width="25%" align:"right"><h4>GST Regn. No: 29AABCA4807H1ZS</h4></td>
-			</tr>
-			<tr>
-				<td align="center" width="100%"><h4>Branch At: Plot no 16E, Bidadi Industrial Area, Phase 2 Sector 1, Bidadi, Ramnagara-562109, <br><b>Email: aspensteel_unit2@yahoo.com </b></h4></td>
-			</tr>
-			<tr>
-				<td align="center" width="100%"><h4>Head Office At: 54/1, Medahalli, Old Madras Road, Bangalore-560049</h4></td>
-			</tr>
-		</table>
-		<table>
+	$html = companyHeader($str)
+        .'<table>
 			<tr>
 				<td align="center" width="100%"><hr color=#00CC33 size=3 width=100></td>
 			</tr>
@@ -420,20 +408,20 @@ class bill_details_model extends Base_module_model {
 			</td>
 			<td width="75%"><h3>'.$container.'</h3></td>
 		</tr>
-		<tr>
-			<td width="70%">
-				<h3><b>Received the above goods in good condition.</b></h3>
+        <tr>
+			<td width="60%">
+				<h3>Received the above goods in good condition.</h3>
 			</td>
-			<td width="30%"><h3> For ASPEN STEEL (P) LTD.</h3></td>
+			<td width="30%"><h3>For '.$this->companyData->company_name.'.</h3></td>
 		</tr>
 		<tr>
 			<td></td>
 		</tr>
 		<tr>
-			<td width="70%">
+			<td width="80%">
 				<h3><b>Receivers Signature</b></h3>
 			</td>
-			<td width="30%"><h3> Manager/Director</h3></td>
+			<td width="20%"><h3> Manager/Director</h3></td>
 		</tr>
 		</table>';
 
@@ -524,29 +512,14 @@ class bill_details_model extends Base_module_model {
 		$pdf->AddPage();
 		//$coilno='',$partyname='',$description='',$lorryno='',$totalpcs='',$totalweight='',$totamount=''
 
-	$html = '<table width="100%"  cellspacing="0" cellpadding="5" border="0">';
-
+	$str = '';
 	if( $billStatus == 'Cancelled') {
-		$html .= '<tr>
+		$str = '<tr>
 				<td align="center"><h3>** Note : This bill has been cancelled</h3></td>
 			</tr>';
 	}
 
-	$html .='<tr>
-				<td align="center"><b>Job Work / Delivery Challan</b></td>
-			</tr>
-			<tr>
-				<td width="16%" align:"left"><h4>TIN:29730066589</h4></td>
-				<td width="70%"align="center" style="font-size:60px; font-style:italic; font-family: fantasy;"><h1>ASPEN STEEL PVT LTD</h1></td>
-				<td width="25%" align:"right"><h4>GST Regn. No: 29AABCA4807H1ZS</h4></td>
-		</tr>
-		<tr>
-			<td align="center" width="100%"><h4>Branch At: Plot no 16E, Bidadi Industrial Area, Phase 2 Sector 1, Bidadi, Ramnagara-562109, <br><b>Email: aspensteel_unit2@yahoo.com </b></h4></td>
-		</tr>
-		<tr>
-			<td align="center" width="100%"><h4>Head Office At: 54/1, Medahalli, Old Madras Road, Bangalore-560049</h4></td>
-		</tr>
-		</table>
+	$html = companyHeader($str).'
 		<table width="100%" cellspacing="0" cellpadding="0" >
 			<tr>
 				<td align="center" width="100%"><hr color=#00CC33 size=3 width=100></td>
@@ -658,10 +631,10 @@ class bill_details_model extends Base_module_model {
 			</td> 	<td width="75%"><h3>'.$container.'</h3></td>
 		</tr>
 		<tr>
-			<td width="70%">
-				<h3><b>Received the above goods in good condition.</b></h3>
+				<td width="70%">
+					<h3>Received the above goods in good condition.</h3>
 				</td>
-				<td width="30%"><h3> For ASPEN STEEL (P) LTD.</h3></td>
+				<td width="30%"><h3>For '.$this->companyData->company_name.'.</h3></td>
 		</tr>
 		<tr><td></td></tr>
 		<tr>
@@ -799,35 +772,23 @@ class bill_details_model extends Base_module_model {
 		$pdf->SetFont('helvetica', '', 8);
 		$pdf->AddPage();
 
-	$html = '<table width="100%"  cellspacing="0" cellpadding="5" border="0">';
-
+        $str = '';
 	if( $billStatus == 'Cancelled') {
-		$html .= '<tr>
+		$str = '<tr>
 				<td align="center"><h3>** Note : This bill has been cancelled</h3></td>
 			</tr>';
 	}
 
-	$html .='<tr>
-						<td align="center"><b>Job Work / Delivery Challan</b></td>
-					</tr>
-					<tr>
-						<td width="16%" align:"left"><h4>TIN:29730066589</h4></td>
-						<td width="70%"align="center" style="font-size:60px; font-style:italic; font-family: fantasy;"><h1>ASPEN STEEL PVT LTD</h1></td>
-						<td width="25%" align:"right"><h4>GST Regn. No: 29AABCA4807H1ZS</h4></td>
-					</tr>
-					<tr>
-						<td align="center" width="100%"><h4>Aspen Steel Pvt Ltd, Plot no 16E, Bidadi Industrial Area, Phase 2 Sector 1, Bidadi, Ramnagara-562109, <br><b>Email: aspensteel_unit2@yahoo.com </b></h4></td>
-					</tr>
-					<tr>
+	$html = companyHeader($str).'
+				<table width="100%" cellspacing="0" cellpadding="0" >
+				    <tr>
 						<td align="center" width="100%"><hr color=#00CC33 size=5 width=100></td>
 					</tr>
-					<tr>
+				    <tr>
 						<td width="30%" align:"left"><h3>Billnumber : '.$billnumber.'</h3></td>
-						<td width="40%" align="center"><h3>Coilnumber : '.$partyid.'</h3></td>
+						<td width="40%" align="center"><h3>Coilnumber : '.$invoice.'</h3></td>
 						<td width="33.33%" align:"right"><h3>Billdate : '.$billdate.' </h3></td>
 					</tr>
-				</table>
-				<table width="100%" cellspacing="0" cellpadding="0" >
 					<tr>
 						<td align="left"></td>
 						<td></td>
@@ -936,15 +897,16 @@ class bill_details_model extends Base_module_model {
 				<td width="200px" border="0" align="left"><b>Grand Total In words</b></td>
 				<td width="300px" border="0" align="left"><b>'.$container.'</b>&nbsp;</td>
 			</tr>
+			<tr><td></td></tr>
 			<tr>
-				<td width="65%">
+				<td width="60%">
 					<b>Received the above goods in good condition.</b>
 				</td>
-				<td width="25%"><b>For ASPEN STEEL (P) LTD.</b></td>
+				<td width="30%"><b>For '.$this->companyData->company_name.'.</b></td>
 			</tr>
 			<tr><td></td></tr>
 			<tr>
-				<td width="70%">
+				<td width="60%">
 					<b>Receivers Signature</b>
 				</td>
 				<td width="30%"><b>Manager/Director</b></td>

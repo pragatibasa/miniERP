@@ -1222,7 +1222,7 @@ function savebill_details() {
 		var container=$('#container').val(); 
 		var gstType = $('input[name=gstType]:checked').val();
 		
-		var dataString =  'billid='+billid+'&partyid='+partyid+'&txtamount='+txtamount+'&txttotalweight='+txttotalweight+'&txtscrap='+txtscrap+'&txtoutward_num='+txtoutward_num+'&driverContact='+driverContact+'&txttotalpcs='+txttotalpcs+'&mat_desc='+mat_desc+'&thic='+thic+'&actualnumberbundle='+actualnumberbundle+'&pname='+pname+'&wid='+wid+'&len='+len+'&wei='+wei+'&txttotallength='+txttotallength+'&txtweighttotal='+txtweighttotal+'&txtwidthtotal='+txtwidthtotal+'&txtadditional_type='+txtadditional_type+'&txtamount_mt='+txtamount_mt+'&txtnsubtotal='+txtnsubtotal+'&txtservicetax='+txtservicetax+'&txteductax='+txteductax+'&txtsecedutax='+txtsecedutax+'&txtRateTotal='+txtRateTotal+'&txtgrandtotal='+txtgrandtotal+'&container='+container;
+		var dataString =  'billid='+billid+'&partyid='+partyid+'&txtamount='+txtamount+'&txttotalweight='+txttotalweight+'&txtscrap='+txtscrap+'&txtoutward_num='+txtoutward_num+'&driverContact='+driverContact+'&txttotalpcs='+txttotalpcs+'&mat_desc='+mat_desc+'&thic='+thic+'&actualnumberbundle='+actualnumberbundle+'&pname='+pname+'&wid='+wid+'&len='+len+'&wei='+wei+'&txttotallength='+txttotallength+'&txtweighttotal='+txtweighttotal+'&txtwidthtotal='+txtwidthtotal+'&txtadditional_type='+txtadditional_type+'&txtamount_mt='+txtamount_mt+'&txtnsubtotal='+txtnsubtotal+'&txtservicetax='+txtservicetax+'&txteductax='+txteductax+'&txtsecedutax='+txtsecedutax+'&txtRateTotal='+txtRateTotal+'&txtgrandtotal='+txtgrandtotal+'&container='+container+'&gstType='+gstType;
 		$.ajax({  
 		   type: "POST",  
 		   url : "<?php echo fuel_url('billing/savebilldetails');?>/",  

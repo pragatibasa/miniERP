@@ -87,9 +87,13 @@ class Login extends CI_Controller {
 						);
 
 						set_cookie($config);
-						
-						$forward = $this->input->post('forward');
+                        $this->session->unset_userdata('failed_login_timer');
+
+                        $forward = $this->input->post('forward');
 						$forward_uri = uri_safe_decode($forward);
+
+                        $this->session->set_userdata('company_data',$this->users_model->getCompanyDetails());
+
 						if ($forward AND $forward_uri != fuel_uri('dashboard'))
 						{
 							redirect($forward_uri);
@@ -133,6 +137,7 @@ class Login extends CI_Controller {
 					$this->users_model->add_error(lang('error_empty_user_pwd'));
 				}
 			}
+
 			$this->session->set_userdata($session_key, $user_data);
 		}
 		

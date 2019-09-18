@@ -430,7 +430,13 @@ class Users_model extends Base_module_model {
 		}	
 		return $arr;
 	}
-	
+
+	function getCompanyDetails() {
+        $sql = "select * from aspen_company_details limit 1";
+        $query = $this->db->query($sql);
+
+        return $query->result()[0];
+    }
 }
 
 class User_model extends Base_module_record {

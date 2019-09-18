@@ -5,33 +5,21 @@ class Billing extends Fuel_base_controller {
 
 	public $nav_selected =  'billing';
 	public $view_location = 'billing';
-	private $billing;
 	private $data;
-	private $sdata;
-	private $sltdata;
-	private $dirdata;
-	private $semidata;
-	private $recdata;
 	private $partyname;
 	private $partyid;
 	private $nsno;
 	private $processchk;
 	private $totalweight;
-	private $qdata;
-	private $updata;
-	private $adata;
-	private $ldata;
-	private $widata;
-	private $vdata; 
-	private $hdata;
-	private $finalbillgenerateb;
-	
+
 	function __construct()
 	{
 		parent::__construct();
 		$this->config->load('billing');
 		$this->load->language('billing');
-		$this->billing_instruction = $this->config->item('billing');
+        $this->load->library('session');
+
+        $this->billing_instruction = $this->config->item('billing');
 		$this->load->module_model(BILLING_FOLDER, 'billing_model');
 		$this->data = $this->billing_model->example();
 		if(isset($this->data)) {
@@ -885,39 +873,15 @@ class Billing extends Fuel_base_controller {
 	}
 	
  
-		function billing_direct(){
-		//print_r($_POST); die();
-	 $queryStr = $_SERVER['QUERY_STRING'];
-        parse_str($queryStr, $args);
-        $billid = $args["billid"];
-		$partyid = $args["partyid"];
-		$pname = $args["pname"];
-		$cust_add = $args["cust_add"];
-		$cust_rm = $args["cust_rm"];
-		$mat_desc = $args["mat_desc"];
-		$thic = $args["thic"];
-		$wid = $args["wid"];
-		$len = $args["len"];
-		$wei = $args["wei"];
-		$inv_no = $args["inv_no"];
-		$totalweight_check = $args["totalweight_check"];
-		$totalrate = $args["totalrate"];
-		$totalamt = $args["totalamt"];
-		$txthandling = $args["txthandling"];
-		$txtadditional_type = $args["txtadditional_type"];
-		$txtamount_mt = $args["txtamount_mt"];
-		$txtoutward_num = $args["txtoutward_num"];
-		$txtscrap = $args["txtscrap"];
-		$txtservicetax = $args["txtservicetax"];
-		$txteductax = $args["txteductax"];
-		$txtsecedutax = $args["txtsecedutax"];
-		$txtgrandtotal = $args["txtgrandtotal"];
-		$container = $args["container"];
-		$gstType = $args["gstType"];
+	function billing_direct(){
+	    $queryStr = $_SERVER['QUERY_STRING'];
+	    parse_str($queryStr, $args);
+	    $billid = $args["billid"];
+	    $partyid = $args["partyid"];
+	    $gstType = $args["gstType"];
 
-	$this->load->module_model(BILLING_FOLDER, 'billing_model');
-	$billing_direct = $this->billing_model->billing_direct($billid,$partyid,$pname,$cust_add,$cust_rm,$mat_desc,$thic,$wid,$len,$wei,$inv_no,$totalweight_check,$totalrate,$totalamt,$txthandling,$txtadditional_type,$txtamount_mt,$txtoutward_num,$txtscrap,$txtservicetax,$txteductax,$txtsecedutax,$txtgrandtotal,$container,$gstType);
-	
+	    $this->load->module_model(BILLING_FOLDER, 'billing_model');
+	    $billing_direct = $this->billing_model->billing_direct($billid,$partyid,$gstType);
 	}
 	
 	

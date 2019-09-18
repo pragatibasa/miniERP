@@ -1,4 +1,11 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+require 'vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use Aws\Ses\SesClient;
+use Aws\Ses\Exception\SesException;
+
 /**
  * CodeIgniter
  *
@@ -514,6 +521,99 @@ return $_config[0];
 		}
 	}
 
+	function companyHeader($str = '') {
+        $CI =& get_instance();
+        $companyData = $CI->fuel_auth->company_data();
+
+	    $strHeader = '<table width="100%"  cellspacing="0" cellpadding="5" border="0">
+            '.$str.'
+			<tr>
+				<td align="center"><b>Job Work / Delivery Challan</b></td>
+			</tr>
+			<tr>
+				<td width="16%" align:"left"><h4>TIN:'.$companyData->tin_no.'</h4></td>
+				<td width="70%"align="center" style="font-size:60px; font-style:italic; font-family: fantasy;"><h1>'.$companyData->company_name.'</h1></td>
+				<td width="20%" align:"right"><h4>GST Regn. No: '.$companyData->gst_no.'</h4></td>
+			</tr>
+			<tr>
+				<td align="center" width="100%"><h4>Branch At: '.$companyData->branch_address.'<b><br/> Email: '.$companyData->email.'</b></h4></td>
+			</tr>
+			<tr>
+				<td align="center" width="100%"><h4>Head Office At: '.$companyData->head_address.'</h4></td>
+			</tr>
+		</table>';
+
+	    return $strHeader;
+    }
+
+    function billingFooter() {
+        $CI =& get_instance();
+        $companyData = $CI->fuel_auth->company_data();
+
+	    $strFooter = '<tr>
+				<td width="60%">
+					<b>Received the above goods in good condition.</b>
+				</td>
+				<td width="30%"><b>For '.$companyData->company_name.'.</b></td>
+			</tr>';
+
+	    return $strFooter;
+    }
+
+    function sendEmail($recipients, $subject, $body, $filePath = '') {
+        $sender = 'info@aspensteel2.com';
+        $senderName = 'Aspen Steel Pvt Ltd';
+        $recipient = $recipients;
+        $usernameSmtp = 'AKIARC37NFLSIAWUVBOA';
+
+        $passwordSmtp = 'BGJH/OrzJvAwb0NXipmX5Nt9vCd3kViMVW+IlAEk30wK';
+
+        $configurationSet = 'aspensteel2';
+        $host = 'email-smtp.us-east-1.amazonaws.com';
+        $port = 587;
+
+        $mail = new PHPMailer(true);
+
+        try {
+            // Specify the SMTP settings.
+            $mail->isSMTP();
+            $mail->setFrom($sender, $senderName);
+            $mail->Username   = $usernameSmtp;
+            $mail->Password   = $passwordSmtp;
+            $mail->Host       = $host;
+            $mail->Port       = $port;
+            $mail->SMTPAuth   = true;
+            $mail->SMTPSecure = 'tls';
+            $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
+
+            // Specify the message recipients.
+            $mail->addAddress($recipient);
+            // You can also add CC, BCC, and additional To recipients here.
+
+            // Specify the content of the message.
+            $mail->isHTML(true);
+            $mail->Subject    = $subject;
+            $mail->Body       = $body;
+            if( $filePath != '' )
+                $mail->addAttachment($filePath);
+
+            $mail->Send();
+            echo "Email sent!" , PHP_EOL;
+            if( $filePath != '' )
+                unlink($filePath);
+        } catch (phpmailerException $e) {
+            echo "An error occurred. {$e->errorMessage()}", PHP_EOL; //Catch errors from PHPMailer.
+        } catch (Exception $e) {
+            echo "Email not sent. {$mail->ErrorInfo}", PHP_EOL; //Catch errors from Amazon SES.
+        }
+    }
+
+	function show($variable) {
+	    print_r('<pre>');
+	    print_r($variable);
+	    print_r('</pre>');
+	    exit;
+    }
 
 /* End of file Common.php */
 /* Location: ./system/core/Common.php */

@@ -74,7 +74,11 @@ class Fuel_auth {
 		}
 		return FALSE;
 	}
-	
+
+	function company_data() {
+	    return ($this->_CI->session->all_userdata()['company_data']) ? $this->_CI->session->all_userdata()['company_data'] : NULL;
+    }
+
 	function is_logged_in()
 	{
 		$user = $this->valid_user();

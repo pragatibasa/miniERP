@@ -78,9 +78,9 @@ class inward extends Fuel_base_controller {
 	
 	}
 		
-	function savedetails(){
+	function savedetails() {
 		if (!empty($_POST)){
-		$this->load->module_model(INWARD_FOLDER, 'inward_model');
+    		$this->load->module_model(INWARD_FOLDER, 'inward_model');
 			$arr = $this->inward_model->saveinwardentry($_POST['pid'],$_POST['pname'], $_POST['date3'],$_POST['lno'],$_POST['icno'],$_POST['date4'], $_POST['coil'],$_POST['fWidth'], $_POST['fThickness'],$_POST['fLength'],$_POST['fQuantity'],$_POST['status'],$_POST['hno'],$_POST['pna'],$_POST['ppartyid'],$_POST['parentBundleNumber'],$_POST['grade'],$_POST['cast']);
 			if(empty($arr)) echo 'Success'; else echo 'Unable to save';
 	

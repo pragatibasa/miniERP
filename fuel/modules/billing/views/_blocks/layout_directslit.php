@@ -558,7 +558,7 @@ function functionpdfslitprint(){
 	var bundlenumbers = $('#txtbundleids').val();
   	var gstType = $('input[name=gstType]:checked').val();
 
-	var dataString = 'billid='+billid+'&partyid='+partyid+'&pname='+pname+'&cust_add='+cust_add+'&cust_rm='+cust_rm+'&mat_desc='+mat_desc+'&thic='+thic+'&wid='+wid+'&len='+len+'&wei='+wei+'&inv_no='+inv_no+'&totalweight_check='+totalweight_check+'&totalrate='+totalrate+'&totalamt='+totalamt+'&txthandling='+txthandling+'&txtadditional_type='+txtadditional_type+'&txtamount_mt='+txtamount_mt+'&txtoutward_num='+txtoutward_num+'&driverContact='+driverContact+'&txtscrap='+txtscrap+'&txtservicetax='+txtservicetax+'&txteductax='+txteductax+'&txtsecedutax='+txtsecedutax+'&txtgrandtotal='+txtgrandtotal+'&container='+container+'&txtslitsubtotal='+txtslitsubtotal+'&bundleNumbers='+bundlenumbers+'&txtadditional_type1='+txtadditional_type1+'&txtamount_mt1='+txtamount_mt1;
+	var dataString = 'billid='+billid+'&partyid='+partyid+'&pname='+pname+'&cust_add='+cust_add+'&cust_rm='+cust_rm+'&mat_desc='+mat_desc+'&thic='+thic+'&wid='+wid+'&len='+len+'&wei='+wei+'&inv_no='+inv_no+'&totalweight_check='+totalweight_check+'&totalrate='+totalrate+'&totalamt='+totalamt+'&txthandling='+txthandling+'&txtadditional_type='+txtadditional_type+'&txtamount_mt='+txtamount_mt+'&txtoutward_num='+txtoutward_num+'&driverContact='+driverContact+'&txtscrap='+txtscrap+'&txtservicetax='+txtservicetax+'&txteductax='+txteductax+'&txtsecedutax='+txtsecedutax+'&txtgrandtotal='+txtgrandtotal+'&container='+container+'&txtslitsubtotal='+txtslitsubtotal+'&bundleNumbers='+bundlenumbers+'&txtadditional_type1='+txtadditional_type1+'&txtamount_mt1='+txtamount_mt1+'&gstType='+gstType;
 	
 	$.ajax({  
 	   type: "POST",  
@@ -621,7 +621,7 @@ function totalamts(){
 	var mat_desc=$('#mat_desc').val();
 	var wei = $('#wei').val();
 	 var dataString = 'partyid='+partyid+'&cust_add='+cust_add+'&cust_rm='+cust_rm+'&txthandling='+txthandling+'&mat_desc='+mat_desc+'&wei='+wei;
-$.ajax({  
+    $.ajax({
 	   type: "POST",  
 	   url : "<?php echo fuel_url('billing/totalamts');?>/",  
 		data: dataString,

@@ -154,6 +154,8 @@ class inward_model extends Base_module_model {
 	function saveinwardentry($pid,$pname, $date3,$lno,$icno,$date4,$coil,$fWidth,
 							$fThickness,$fLength,$fQuantity,$status,$hno,$pna,$ppartyId,$parentBundleNumber,$grade,$cast)
 	{
+
+
 		$updateSql = '';
 		if(!empty($ppartyId)) {
 			$ppartyId = $ppartyId;
@@ -186,10 +188,64 @@ class inward_model extends Base_module_model {
 		if($query->result()[0]->nInwardUpdates) {
 			sendSMS($query->result()[0]->nInwardUpdates,'Received Coil No '.$pid.'%n'.$coil.' '.$fThickness.'mm x '.$fWidth.'mm '.$fQuantity.'kgs%nOn '.date('d/m/Y').'%nVehicle no '.$lno.'%nRef:'.$icno);
 		}
+        if($query->result()[0]->vemailaddress) {
+            $strEmailHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                            <html xmlns="http://www.w3.org/1999/xhtml">
+                            <head>
+                            <title>Inward Received</title>
+                            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0 " />
+                            <style>
+                            </style>
+                            </head>';
+
+            $strEmailHtml .= '<h4>Dear Customer,</h4>';
+            $strEmailHtml .= '<h4>The following info is for your  perusal:</h4>';
+            $strEmailHtml .= '<table style="width:80%; border-collapse: collapse;" cellpadding="5">
+                            <tr>
+                                <td style="border: 1px solid black;">Coil Number</td>
+                                <td style="border: 1px solid black;">'.$pid.'</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Material Description</td>
+                                <td style="border: 1px solid black;">'.$coil.'</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Thickness</td>
+                                <td style="border: 1px solid black;">'.$fThickness.' mm</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Width</td>
+                                <td style="border: 1px solid black;">'.$fWidth.' mm</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Quantity</td>
+                                <td style="border: 1px solid black;">'.$fQuantity.' kgs</td>
+                            </tr>                            <tr>
+                                <td style="border: 1px solid black;">Received Date</td>
+                                <td style="border: 1px solid black;">'.date('d/m/Y').'</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Vehicle no</td>
+                                <td style="border: 1px solid black;">'.$lno.'</td>
+                            </tr>' .
+                '               <tr>
+                                <td style="border: 1px solid black;">Invoice Number</td>
+                                <td style="border: 1px solid black;">'.$icno.'</td>
+                            </tr>
+                          </table>';
+            $strEmailHtml .= '<p>For Aspen Steel Pvt ltd</p>
+                          <p>Please contact our unit coordinator for any clarification.</p>
+                          <p>Customer Service team<br/>
+                          Unit 2 (Bidadi)<br/>
+                          8217766390/7008898426</p>';
+
+            $strEmailHtml .= '<p style="color:#999999;">This is a system generated mail. Please reply to aspen.bidadi@gmail.com for more details.</p>';
+
+            sendEmail($query->result()[0]->vemailaddress, 'New coil received for '.$pname, $strEmailHtml);
+        }
 	}
-
-
-
 
 	function mat() {
 		$sql = "select * from aspen_tblmatdescription";

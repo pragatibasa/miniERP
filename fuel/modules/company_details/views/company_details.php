@@ -1,10 +1,5 @@
-
-
 <script type="text/javascript">
-	
 function pullFolders(selectedItem) {
-
-	
 	$.post('<?php echo fuel_url("company_details/coil"); ?>',
 		{ storage_account : selectedItem },
 		function(response) {  
@@ -12,16 +7,12 @@ function pullFolders(selectedItem) {
 		}  
 	);
 }
-
-
- </script> 
+</script>
  
  <script type="text/javascript">
 function load_party_account() {
     var account_id = $("#coil").val();
     var accountname = $("#coil :selected").html();
-    loadfolderlist(account_id, accountname);
- 
 }
 
 function refresh_folderlist() {
@@ -29,8 +20,8 @@ function refresh_folderlist() {
     var selected = $("#coil :selected").html();
     load_party_account();
 }
-$(document).ready(function() { 
 
+$(document).ready(function() {
     $("#coil").change(function(data) {
         load_party_account();
     });

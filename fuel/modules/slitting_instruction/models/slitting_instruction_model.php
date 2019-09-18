@@ -59,7 +59,7 @@ class slitting_instruction_model extends Base_module_model {
 			$vIRnumber = $_POST['pid'];
 	 	}
 		$sql = ("UPDATE aspen_tblslittinginstruction SET nWidth='". $width_v. "'");
-       	$sql.=" WHERE aspen_tblslittinginstruction.nSno='".$bundlenumber."' and vIRnumber=".$vIRnumber."";
+       	$sql.=" WHERE aspen_tblslittinginstruction.nSno='".$bundlenumber."' and vIRnumber='".$vIRnumber."'";
 
     	$query1=$this->db->query ($sql);
 	}
@@ -74,23 +74,90 @@ class slitting_instruction_model extends Base_module_model {
 		where ai.vIRnumber = '".$_POST['pid']."'";
 		$query = $this->db->query($strSql);
 
-		if($query->result()[0]->nProcessUpdates) {
-			$strBundleSql = "select count(nWidth) as count, nWidth,sum(nWeight) as totalWeight from aspen_tblslittinginstruction where vIRnumber='".$_POST['pid']."' group by nWidth With Rollup";
-			$queryBundle = $this->db->query($strBundleSql);
-			if ($queryBundle->num_rows() > 0) {
-				$strBundle = '';
-				$index = 1;
-				$totalWeight = 0;
-				foreach($queryBundle->result() as $key => $row) {
-					if($row->nWidth !== NULL)
-						$strBundle .= '%n'.$index++.') '.$row->nWidth.'mm - '.$row->count.'Nos - '.$row->totalWeight.'kgs';
-					else 
-						$totalWeight = $row->totalWeight;
-				}
-			} 
-
+        $strBundleSql = "select count(nWidth) as count, nWidth,sum(nWeight) as totalWeight from aspen_tblslittinginstruction where vIRnumber='".$_POST['pid']."' group by nWidth With Rollup";
+        $queryBundle = $this->db->query($strBundleSql);
+        if ($queryBundle->num_rows() > 0) {
+            $strBundle = '';
+            $strBundle1 = '';
+            $index = 1;
+            $totalWeight = 0;
+            foreach($queryBundle->result() as $key => $row) {
+                if($row->nWidth !== NULL) {
+                    $strBundle .= '%n' . $index . ') ' . $row->nWidth . 'mm - ' . $row->count . 'Nos - ' . $row->totalWeight . 'kgs';
+                    $strBundle1 .= $index . ') ' . $row->nWidth . 'mm - ' . $row->count . 'Nos - ' . $row->totalWeight . 'kgs<br>';
+                    $index++;
+                } else
+                    $totalWeight = $row->totalWeight;
+            }
+        }
+        if($query->result()[0]->nProcessUpdates) {
 			sendSMS($query->result()[0]->nProcessUpdates,'Slitting instruction given for Coil '.$_POST['pid'].'%n'.$query->result()[0]->vDescription.' '.$query->result()[0]->fThickness.'mm x '.$query->result()[0]->fWidth.'mm%nProcess:Slitting'.$strBundle.'%nTotal weight '.$totalWeight.'kgs');
 		}
+
+        if($query->result()[0]->vemailaddress) {
+
+            $strEmailHtml = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                            <html xmlns="http://www.w3.org/1999/xhtml">
+                            <head>
+                            <title>Slitting Instruction</title>
+                            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0 " />
+                            <style>
+                            </style>
+                            </head>';
+
+            $strEmailHtml .= '<h4>Dear Customer,</h4>';
+            $strEmailHtml .= '<h4>Slitting instruction has been given for coil number '.$_POST['pid'].'. The following info is for your  perusal:</h4>';
+            $strEmailHtml .= '<table style="width:80%; border-collapse: collapse;" cellpadding="5">
+                            <tr>
+                                <td style="border: 1px solid black;">Coil Number</td>
+                                <td style="border: 1px solid black;">'.$_POST['pid'].'</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Material Description</td>
+                                <td style="border: 1px solid black;">'.$query->result()[0]->vDescription.'</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Thickness</td>
+                                <td style="border: 1px solid black;">'.$query->result()[0]->fThickness.' mm</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Width</td>
+                                <td style="border: 1px solid black;">'.$query->result()[0]->fWidth.' mm</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Quantity</td>
+                                <td style="border: 1px solid black;">'.$query->result()[0]->fQuantity.' kgs</td>
+                            </tr>                            <tr>
+                                <td style="border: 1px solid black;">Received Date</td>
+                                <td style="border: 1px solid black;">'.$query->result()[0]->dReceivedDate.'</td>
+                            </tr>
+                            </tr>       
+                            <tr>
+                                <td style="border: 1px solid black;">Process</td>
+                                <td style="border: 1px solid black;">Slitting</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Slitting Details</td>
+                                <td style="border: 1px solid black;word-wrap: break-word;overflow-wrap: break-word;">'.$strBundle1.'</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Total Weight</td>
+                                <td style="border: 1px solid black;word-wrap: break-word;overflow-wrap: break-word;">'.$totalWeight.'</td>
+                            </tr>
+                          </table>';
+
+            $strEmailHtml .= '<p>For Aspen Steel Pvt ltd</p>
+                          <p>Please contact our unit coordinator for any clarification.</p>
+                          <p>Customer Service team<br/>
+                          Unit 2 (Bidadi)<br/>
+                          8217766390/7008898426</p>';
+
+            $strEmailHtml .= '<p style="color:#999999;">This is a system generated mail. Please reply to aspen.bidadi@gmail.com for more details.</p>';
+
+            sendEmail($query->result()[0]->vemailaddress, 'Slitting instruction given for coil number '.$_POST['pid'], $strEmailHtml);
+        }
 	}
 	
 	function getCuttingInstruction($pid) {
