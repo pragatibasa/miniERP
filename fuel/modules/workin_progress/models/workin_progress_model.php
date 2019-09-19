@@ -71,18 +71,43 @@ class workin_progress_model extends Base_module_model {
 
 	function toolbar_list()
 	{
-    $strWorkingProgressList = "select DISTINCT aspen_tblinwardentry.vIRnumber as coilnumber , DATE_FORMAT(aspen_tblinwardentry.dReceivedDate, '%d-%m-%Y') as receiveddate, DATE_FORMAT(aspen_tblcuttinginstruction.dDate, '%d-%m-%Y') as sizegivendate ,DATE_FORMAT(aspen_tblrecoiling.dStartDate, '%d-%m-%Y') as recoilingdate ,DATE_FORMAT(aspen_tblslittinginstruction.dDate, '%d-%m-%Y') as slittingdate,aspen_tblpartydetails.nPartyName as partyname,aspen_tblmatdescription.vDescription as materialdescription, aspen_tblinwardentry.fThickness as thickness, aspen_tblinwardentry.fWidth as width, aspen_tblinwardentry.fpresent as weight,aspen_tblinwardentry.vprocess as process, ifnull(aspen_tbl_cuttingslipgenerated.numTimesGenerated,0) as numTimesGenerated From aspen_tblinwardentry LEFT JOIN aspen_tblmatdescription  ON aspen_tblmatdescription.nMatId=aspen_tblinwardentry.nMatId LEFT JOIN aspen_tblcuttinginstruction  ON aspen_tblcuttinginstruction.vIRnumber=aspen_tblinwardentry.vIRnumber LEFT JOIN aspen_tblrecoiling  ON aspen_tblrecoiling .vIRnumber=aspen_tblinwardentry.vIRnumber LEFT JOIN aspen_tblpartydetails ON aspen_tblpartydetails .nPartyId=aspen_tblinwardentry.nPartyId
-		LEFT JOIN aspen_tblslittinginstruction ON aspen_tblslittinginstruction .vIRnumber=aspen_tblinwardentry.vIRnumber
-		LEFT JOIN aspen_tblbillingstatus ON aspen_tblbillingstatus.vIRnumber=aspen_tblinwardentry.vIRnumber
-		LEFT JOIN aspen_tbl_cuttingslipgenerated ON aspen_tbl_cuttingslipgenerated.nPartyId=aspen_tblinwardentry.vIRnumber
-		where aspen_tblinwardentry.vStatus = 'Work In Progress' or aspen_tblslittinginstruction.vStatus='WIP-Slitting' or aspen_tblrecoiling.vStatus='WIP-Recoiling' or aspen_tblcuttinginstruction.vStatus='WIP-Cutting' Group by aspen_tblinwardentry.vIRnumber";
+    $strWorkingProgressList = "SELECT DISTINCT
+                aspen_tblinwardentry.vIRnumber AS coilnumber,
+                DATE_FORMAT(aspen_tblinwardentry.dReceivedDate,
+                        '%d-%m-%Y') AS receiveddate,
+                DATE_FORMAT(aspen_tblcuttinginstruction.dDate,
+                        '%d-%m-%Y') AS sizegivendate,
+                DATE_FORMAT(aspen_tblslittinginstruction.dDate,
+                        '%d-%m-%Y') AS slittingdate,
+                aspen_tblpartydetails.nPartyName AS partyname,
+                aspen_tblmatdescription.vDescription AS materialdescription,
+                aspen_tblinwardentry.fThickness AS thickness,
+                aspen_tblinwardentry.fWidth AS width,
+                aspen_tblinwardentry.fpresent AS weight,
+                aspen_tblinwardentry.vprocess AS process
+            FROM
+                aspen_tblinwardentry
+                    LEFT JOIN
+                aspen_tblmatdescription ON aspen_tblmatdescription.nMatId = aspen_tblinwardentry.nMatId
+                    LEFT JOIN
+                aspen_tblcuttinginstruction ON aspen_tblcuttinginstruction.vIRnumber = aspen_tblinwardentry.vIRnumber
+                    LEFT JOIN
+                aspen_tblpartydetails ON aspen_tblpartydetails.nPartyId = aspen_tblinwardentry.nPartyId
+                    LEFT JOIN
+                aspen_tblslittinginstruction ON aspen_tblslittinginstruction.vIRnumber = aspen_tblinwardentry.vIRnumber
+                    LEFT JOIN
+                aspen_tblbillingstatus ON aspen_tblbillingstatus.vIRnumber = aspen_tblinwardentry.vIRnumber
+            WHERE
+                aspen_tblinwardentry.vStatus = 'Work In Progress'
+                    OR aspen_tblslittinginstruction.vStatus = 'WIP-Slitting'
+                    OR aspen_tblcuttinginstruction.vStatus = 'WIP-Cutting'
+            GROUP BY aspen_tblinwardentry.vIRnumber";
+
 		$query = $this->db->query($strWorkingProgressList);
 
 		$arr='';
-		if ($query->num_rows() > 0)
-		{
-		   foreach ($query->result() as $row)
-		   {
+		if ($query->num_rows() > 0) {
+		   foreach ($query->result() as $row) {
 		      $arr[] =$row;
 		   }
 		}
