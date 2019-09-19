@@ -55,7 +55,7 @@ class Cutting_instruction_model extends Base_module_model {
 	$queryBundle = $this->db->query($strBundleSql);
 	if ($queryBundle->num_rows() > 0) {
 		$strBundle = '';
-		$strBundle1
+		$strBundle1 = '';
 		$index = 1;
 		foreach($queryBundle->result() as $key => $row) {
 			$strBundle .= '%n'.$index.') '.$row->nLength.'mm - '.$row->nNoOfPieces.'Nos - '.$row->nBundleweight.'kgs';
