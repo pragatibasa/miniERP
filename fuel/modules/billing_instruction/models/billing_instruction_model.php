@@ -146,11 +146,10 @@ class Billing_instruction_model extends Base_module_model {
 					LEFT JOIN aspen_tblmatdescription ON aspen_tblmatdescription.nMatId = inw.nMatId
 					LEFT JOIN aspen_tblpartydetails ON aspen_tblpartydetails.nPartyId = inw.nPartyId
 					left join (select 
-					coalesce(aspen_tblcuttinginstruction.vIRnumber,$partyid) as vIRnumber,coalesce(round(sum(nBundleweight-(nBundleweight*nBilledNumber/nNoOfPieces)),2),0) as fQuantity from aspen_tblcuttinginstruction left join aspen_tblbillingstatus on aspen_tblcuttinginstruction.vIRnumber = aspen_tblbillingstatus.vIRnumber and aspen_tblcuttinginstruction.nSno = aspen_tblbillingstatus.nSno where aspen_tblcuttinginstruction.vIRnumber =$partyid) t on t.vIRnumber = inw.vIRnumber
-					left join (select coalesce(aspen_tblslittinginstruction.vIRnumber,$partyid) as vIRnumber,coalesce(sum(nWeight),0) as nWeight from aspen_tblslittinginstruction LEFT JOIN aspen_tblbillingstatus ON aspen_tblslittinginstruction.vIRnumber=aspen_tblbillingstatus.vIRnumber WHERE aspen_tblslittinginstruction.nSno = aspen_tblbillingstatus.nSno and aspen_tblslittinginstruction.vIRnumber='$partyid' and aspen_tblbillingstatus.vBillingStatus != 'Billed') p on p.vIRnumber = inw.vIRnumber 
+					coalesce(aspen_tblcuttinginstruction.vIRnumber, '$partyid') as vIRnumber,coalesce(round(sum(nBundleweight-(nBundleweight*nBilledNumber/nNoOfPieces)),2),0) as fQuantity from aspen_tblcuttinginstruction left join aspen_tblbillingstatus on aspen_tblcuttinginstruction.vIRnumber = aspen_tblbillingstatus.vIRnumber and aspen_tblcuttinginstruction.nSno = aspen_tblbillingstatus.nSno where aspen_tblcuttinginstruction.vIRnumber ='$partyid') t on t.vIRnumber = inw.vIRnumber
+					left join (select coalesce(aspen_tblslittinginstruction.vIRnumber, '$partyid') as vIRnumber,coalesce(sum(nWeight),0) as nWeight from aspen_tblslittinginstruction LEFT JOIN aspen_tblbillingstatus ON aspen_tblslittinginstruction.vIRnumber=aspen_tblbillingstatus.vIRnumber WHERE aspen_tblslittinginstruction.nSno = aspen_tblbillingstatus.nSno and aspen_tblslittinginstruction.vIRnumber='$partyid' and aspen_tblbillingstatus.vBillingStatus != 'Billed') p on p.vIRnumber = inw.vIRnumber 
 					where inw.vIRnumber='$partyid'";
 		}
-
 		$query = $this->db->query($sql);
 		$arr='';
 		if ($query->num_rows() > 0) {
