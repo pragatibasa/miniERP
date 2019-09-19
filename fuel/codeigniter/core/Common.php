@@ -521,31 +521,31 @@ return $_config[0];
 		}
 	}
 
-	function sendSMS($contact,$msg) {
-// Account details
-        $apiKey = urlencode('riQ0XJ3yyrA-ccu7j4FzGWSNGV1EsQeFqe07LPUOy7');
-
-        // Message details
-        $numbers = array($contact);
-        $sender = urlencode('ASPENS');
-        $message = rawurlencode($msg);
-
-        $numbers = implode(',', $numbers);
-
-        // Prepare data for POST request
-        $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-
-        // Send the POST request with cURL
-        $ch = curl_init('https://api.textlocal.in/send/');
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        // Process your response here
-        echo $response;
-    }
+//	function sendSMS($contact,$msg) {
+//// Account details
+//        $apiKey = urlencode('riQ0XJ3yyrA-ccu7j4FzGWSNGV1EsQeFqe07LPUOy7');
+//
+//        // Message details
+//        $numbers = array($contact);
+//        $sender = urlencode('ASPENS');
+//        $message = rawurlencode($msg);
+//
+//        $numbers = implode(',', $numbers);
+//
+//        // Prepare data for POST request
+//        $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+//
+//        // Send the POST request with cURL
+//        $ch = curl_init('https://api.textlocal.in/send/');
+//        curl_setopt($ch, CURLOPT_POST, true);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//        $response = curl_exec($ch);
+//        curl_close($ch);
+//
+//        // Process your response here
+//        echo $response;
+//    }
 
 	function companyHeader($str = '') {
         $CI =& get_instance();
@@ -586,53 +586,53 @@ return $_config[0];
 	    return $strFooter;
     }
 
-    function sendEmail($recipients, $subject, $body, $filePath = '') {
-        $sender = 'info@aspensteel2.com';
-        $senderName = 'Aspen Steel Pvt Ltd';
-        $recipient = $recipients;
-        $usernameSmtp = 'AKIARC37NFLSIAWUVBOA';
-
-        $passwordSmtp = 'BGJH/OrzJvAwb0NXipmX5Nt9vCd3kViMVW+IlAEk30wK';
-
-        $configurationSet = 'aspensteel2';
-        $host = 'email-smtp.us-east-1.amazonaws.com';
-        $port = 587;
-
-        $mail = new PHPMailer(true);
-
-        try {
-            // Specify the SMTP settings.
-            $mail->isSMTP();
-            $mail->setFrom($sender, $senderName);
-            $mail->Username   = $usernameSmtp;
-            $mail->Password   = $passwordSmtp;
-            $mail->Host       = $host;
-            $mail->Port       = $port;
-            $mail->SMTPAuth   = true;
-            $mail->SMTPSecure = 'tls';
-            $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
-
-            // Specify the message recipients.
-            $mail->addAddress($recipient);
-            // You can also add CC, BCC, and additional To recipients here.
-
-            // Specify the content of the message.
-            $mail->isHTML(true);
-            $mail->Subject    = $subject;
-            $mail->Body       = $body;
-            if( $filePath != '' )
-                $mail->addAttachment($filePath);
-
-            $mail->Send();
-            echo "Email sent!" , PHP_EOL;
-            if( $filePath != '' )
-                unlink($filePath);
-        } catch (phpmailerException $e) {
-            echo "An error occurred. {$e->errorMessage()}", PHP_EOL; //Catch errors from PHPMailer.
-        } catch (Exception $e) {
-            echo "Email not sent. {$mail->ErrorInfo}", PHP_EOL; //Catch errors from Amazon SES.
-        }
-    }
+//    function sendEmail($recipients, $subject, $body, $filePath = '') {
+//        $sender = 'info@aspensteel2.com';
+//        $senderName = 'Aspen Steel Pvt Ltd';
+//        $recipient = $recipients;
+//        $usernameSmtp = 'AKIARC37NFLSIAWUVBOA';
+//
+//        $passwordSmtp = 'BGJH/OrzJvAwb0NXipmX5Nt9vCd3kViMVW+IlAEk30wK';
+//
+//        $configurationSet = 'aspensteel2';
+//        $host = 'email-smtp.us-east-1.amazonaws.com';
+//        $port = 587;
+//
+//        $mail = new PHPMailer(true);
+//
+//        try {
+//            // Specify the SMTP settings.
+//            $mail->isSMTP();
+//            $mail->setFrom($sender, $senderName);
+//            $mail->Username   = $usernameSmtp;
+//            $mail->Password   = $passwordSmtp;
+//            $mail->Host       = $host;
+//            $mail->Port       = $port;
+//            $mail->SMTPAuth   = true;
+//            $mail->SMTPSecure = 'tls';
+//            $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
+//
+//            // Specify the message recipients.
+//            $mail->addAddress($recipient);
+//            // You can also add CC, BCC, and additional To recipients here.
+//
+//            // Specify the content of the message.
+//            $mail->isHTML(true);
+//            $mail->Subject    = $subject;
+//            $mail->Body       = $body;
+//            if( $filePath != '' )
+//                $mail->addAttachment($filePath);
+//
+//            $mail->Send();
+//            echo "Email sent!" , PHP_EOL;
+//            if( $filePath != '' )
+//                unlink($filePath);
+//        } catch (phpmailerException $e) {
+//            echo "An error occurred. {$e->errorMessage()}", PHP_EOL; //Catch errors from PHPMailer.
+//        } catch (Exception $e) {
+//            echo "Email not sent. {$mail->ErrorInfo}", PHP_EOL; //Catch errors from Amazon SES.
+//        }
+//    }
 
 	function show($variable) {
 	    print_r('<pre>');
