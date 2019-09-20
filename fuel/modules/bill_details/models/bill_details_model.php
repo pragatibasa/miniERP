@@ -1017,10 +1017,10 @@ class bill_details_model extends Base_module_model {
 			//Updating the data back
 			//Updating inward entry back
 			$strSqlUpdateCoilWeights = "UPDATE aspen_tblinwardentry
-			SET fpresent = fpresent+($arrBillRecord->fTotalWeight*1000), billedweight = fpresent+($arrBillRecord->fTotalWeight*1000) where vIRnumber=$intCoilNumber";
+			SET fpresent = fpresent+($arrBillRecord->fTotalWeight*1000), billedweight = fpresent+($arrBillRecord->fTotalWeight*1000) where vIRnumber='$intCoilNumber'";
 
 			$strSqlUpdateInwardEntryStatus = "UPDATE aspen_tblinwardentry set vStatus = case when (fpresent =fQuantity or billedweight = 0) then 'RECEIVED' else 'Billed' end
-						where vIRnumber=$intCoilNumber";
+						where vIRnumber='$intCoilNumber'";
 
 			//Updating bill record status
 			$strSqlUpdateBillStatus = "UPDATE aspen_tblbilldetails set BillStatus = 'Cancelled' where nBillNo = $billNo";
