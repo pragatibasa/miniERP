@@ -1831,7 +1831,7 @@ function billgeneratemodelslit($coilno='',$partyname='',$description='',$lorryno
 		$query88 = $this->db->query($sql88);
 		$query3 = $this->db->query($sql14);
 		$query66 = $this->db->query($sql66);
-			
+
 		$strSql = "select ai.*,ap.*,am.* from aspen_tblinwardentry as ai 
 		left join aspen_tblmatdescription as am on ai.nMatId = am.nMatId 
 		left join aspen_tblpartydetails as ap on ap.nPartyId = ai.nPartyId
@@ -2226,7 +2226,7 @@ function billgeneratemodelslit($coilno='',$partyname='',$description='',$lorryno
 		$query4 = $this->db->query($sql15);
 		$queryBundleBillingAssociationInsert = $this->db->query($sqlBundleBillingAssociationInsert);
 		$query33 = $this->db->query($sql33);
-		
+
 		$strSql = "select ai.*,ap.*,am.* from aspen_tblinwardentry as ai 
 		left join aspen_tblmatdescription as am on ai.nMatId = am.nMatId 
 		left join aspen_tblpartydetails as ap on ap.nPartyId = ai.nPartyId
@@ -2398,19 +2398,19 @@ function finalbillgeneratemodel($partyid='',$actualnumberbundle='',$cust_add='',
 		if($gstType == 'Within') {
 			$gstSection	= '<tr>
 							<td width="89%">
-							<h3><b>CGST @ 9%</b></h3>
+							<h3><b>CGST @ 6%</b></h3>
 							</td> <td><h3>'.($servicetax/2).'</h3></td>
 						</tr>
 						<tr>
 							<td width="89%">
-							<h3><b>SGST @ 9%</b></h3>
+							<h3><b>SGST @ 6%</b></h3>
 							</td> <td><h3>'.($servicetax/2).'</h3></td>
 						</tr>';
 
 		} else if($gstType == 'Inter') {
 			$gstSection	= '<tr>
 							<td width="89%">
-							<h3><b>IGST @ 18%</b></h3>
+							<h3><b>IGST @ 12%</b></h3>
 							</td> <td><h3>'.ceil($servicetax).'</h3></td>
 						</tr>';
 		}
@@ -3132,17 +3132,17 @@ function finalbillgeneratemodel($partyid='',$actualnumberbundle='',$cust_add='',
 		if($gstType == 'Within') {
 			$gstSection	= '
 						<tr>
-					<td width="555px" border="0" align="left"><b>CGST @ 9%</b></td>
+					<td width="555px" border="0" align="left"><b>CGST @ 6%</b></td>
 					<td><b>'.($servicetax/2).'</b>&nbsp;&nbsp;</td>
 					</tr>
 					<tr>
-					<td width="555px" border="0" align="left"><b>SGST @ 9%</b></td>
+					<td width="555px" border="0" align="left"><b>SGST @ 6%</b></td>
 					<td><b>'.($servicetax/2).'</b>&nbsp;&nbsp;</td>
 					</tr>';
 
 		} else if($gstType == 'Inter') {
 			$gstSection	= '<tr>
-					<td width="555px" border="0" align="left"><b>IGST @ 18%</b></td>
+					<td width="555px" border="0" align="left"><b>IGST @ 12%</b></td>
 					<td><b>'.($servicetax).'</b>&nbsp;&nbsp;</td>
 					</tr>';
 		}
@@ -3407,19 +3407,19 @@ function finalbillgeneratemodel($partyid='',$actualnumberbundle='',$cust_add='',
         if($gstType == 'Within') {
             $gstSection	= '<tr>
 							<td width="89%">
-							<h3><b>CGST @ 9%</b></h3>
+							<h3><b>CGST @ 6%</b></h3>
 							</td> <td><h3>'.($txtservicetax/2).'</h3></td>
 						</tr>
 						<tr>
 							<td width="89%">
-							<h3><b>SGST @ 9%</b></h3>
+							<h3><b>SGST @ 6%</b></h3>
 							</td> <td><h3>'.($txtservicetax/2).'</h3></td>
 						</tr>';
 
         } else if($gstType == 'Inter') {
             $gstSection	= '<tr>
 							<td width="89%">
-							<h3><b>IGST @ 18%</b></h3>
+							<h3><b>IGST @ 12%</b></h3>
 							</td> <td><h3>'.ceil($txtservicetax).'</h3></td>
 						</tr>';
         }
