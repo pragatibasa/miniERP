@@ -2398,19 +2398,19 @@ function finalbillgeneratemodel($partyid='',$actualnumberbundle='',$cust_add='',
 		if($gstType == 'Within') {
 			$gstSection	= '<tr>
 							<td width="89%">
-							<h3><b>CGST @ 6%</b></h3>
+							<h3><b>CGST @ 9%</b></h3>
 							</td> <td><h3>'.($servicetax/2).'</h3></td>
 						</tr>
 						<tr>
 							<td width="89%">
-							<h3><b>SGST @ 6%</b></h3>
+							<h3><b>SGST @ 9%</b></h3>
 							</td> <td><h3>'.($servicetax/2).'</h3></td>
 						</tr>';
 
 		} else if($gstType == 'Inter') {
 			$gstSection	= '<tr>
 							<td width="89%">
-							<h3><b>IGST @ 12%</b></h3>
+							<h3><b>IGST @ 18%</b></h3>
 							</td> <td><h3>'.ceil($servicetax).'</h3></td>
 						</tr>';
 		}
@@ -3132,17 +3132,17 @@ function finalbillgeneratemodel($partyid='',$actualnumberbundle='',$cust_add='',
 		if($gstType == 'Within') {
 			$gstSection	= '
 						<tr>
-					<td width="555px" border="0" align="left"><b>CGST @ 6%</b></td>
+					<td width="555px" border="0" align="left"><b>CGST @ 9%</b></td>
 					<td><b>'.($servicetax/2).'</b>&nbsp;&nbsp;</td>
 					</tr>
 					<tr>
-					<td width="555px" border="0" align="left"><b>SGST @ 6%</b></td>
+					<td width="555px" border="0" align="left"><b>SGST @ 9%</b></td>
 					<td><b>'.($servicetax/2).'</b>&nbsp;&nbsp;</td>
 					</tr>';
 
 		} else if($gstType == 'Inter') {
 			$gstSection	= '<tr>
-					<td width="555px" border="0" align="left"><b>IGST @ 12%</b></td>
+					<td width="555px" border="0" align="left"><b>IGST @ 18%</b></td>
 					<td><b>'.($servicetax).'</b>&nbsp;&nbsp;</td>
 					</tr>';
 		}
@@ -3407,19 +3407,19 @@ function finalbillgeneratemodel($partyid='',$actualnumberbundle='',$cust_add='',
         if($gstType == 'Within') {
             $gstSection	= '<tr>
 							<td width="89%">
-							<h3><b>CGST @ 6%</b></h3>
+							<h3><b>CGST @ 9%</b></h3>
 							</td> <td><h3>'.($txtservicetax/2).'</h3></td>
 						</tr>
 						<tr>
 							<td width="89%">
-							<h3><b>SGST @ 6%</b></h3>
+							<h3><b>SGST @ 9%</b></h3>
 							</td> <td><h3>'.($txtservicetax/2).'</h3></td>
 						</tr>';
 
         } else if($gstType == 'Inter') {
             $gstSection	= '<tr>
 							<td width="89%">
-							<h3><b>IGST @ 12%</b></h3>
+							<h3><b>IGST @ 18%</b></h3>
 							</td> <td><h3>'.ceil($txtservicetax).'</h3></td>
 						</tr>';
         }
